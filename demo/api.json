@@ -1,0 +1,37 @@
+{
+  "title": "pad淘宝数据接口定义",
+  "version": "1.0.0",
+  "mockEngine": "mockjs",
+  "ruleBase": "./",
+  "proxies": [ {
+    "id": "cart.getCart",
+    "desc": "获取购物车",
+    "url": "url1",    // 线上地址
+    "preUrl": "url3", // 预发地址
+    "dailyUrl": "url2", // 日常地址
+    "ruleFile": "cart.getCart.",   // 对应的规则文件  当全局mock状态开启时回返回mock数据
+    "method": "post",   // 请求方式 默认get
+    "dataType": "json",
+    "isCookieNeeded": true, // 是否需要传递cookie 默认false
+    "signed": false,    // 是否需要签名  默认false
+    "timeout": 5000   // 延时设置  默认10000
+  }, {
+    
+  }, {
+
+  } ],
+  "Cart": {
+    "getCart": { 
+      
+    },
+    "deleteCart": {
+      "src": "url",
+      "type": "get",
+      "isCookieNeeded": true
+    },
+    "addCart": {
+      "src": "url",
+      "type": "post"
+    }
+  }
+}
