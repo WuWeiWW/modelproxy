@@ -13,7 +13,7 @@
     },
     "ruleFile": "cart.getCart.rule.json",          
     "isRuleStatic": true,
-    "method": "post",      
+    "method": "post",
     "dataType": "json",
     "isCookieNeeded": true,
     "signed": false,       
