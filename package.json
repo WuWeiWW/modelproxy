@@ -10,7 +10,8 @@
     }
   ],
   "dependencies": {
-    "mockjs": "*"
+    "mockjs": "*",
+    "iconv-lite": "*"
   },
   "repository": {
     "type": "git",

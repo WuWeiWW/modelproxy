@@ -33,9 +33,17 @@ m.getItems({q: 'jackjones'})
  } );
 */
 
-var m = new ModelProxy( 'Cart.getCart' );
+var m = new ModelProxy( 'Search.*' );
+m.suggest( {q: 'jackjones' } )
+    .done( function( data ) {
+        console.log(data);
+    }, function( err ) {
+        console.log( 'this is an error' );
+    } );
+
+/*
 m.getCart({q:'kkk'})
  .done( function( data ) {
     console.log( data );
- } );
+ } );*/
 

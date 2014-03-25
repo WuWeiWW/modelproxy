@@ -16,6 +16,7 @@
 		"isRuleStatic": true,
 		"method": "post",
 		"dataType": "json",
+		"encoding": "gbk",
 		"isCookieNeeded": true,
 		"signed": false,       
 		"timeout": 5000
@@ -30,7 +31,8 @@
 		"id": "Search.suggest",
 		"urls": {
 			"online": "http://suggest.taobao.com/sug"
-		}
+		},
+		"status": "mock"
 	}, {
 		"name": "导航获取接口",
 		"id": "Search.getNav",
