@@ -200,7 +200,7 @@ model.getUser( { sid: 'fdkaldjfgsakls0322yf8' } )
     "version": "1.0.0",                      // [必填] 版本号
     "engine": "mockjs",                      // [选填] mock 引擎，目前只支持mockjs。不需要mock数据时可以不配置
     "rulebase": "./interfaceRules/",         // [选填] mock规则文件夹路径。不需要mock数据时可以不配置 
-    "interfaces": [ {                   
+    "interfaces": [ {
         "name": "获取购物车信息",               // [选填] 接口名称 生成文档有用
         "id": "cart.getCart",                // [必填，全局唯一] 接口ID，必须由英文单词+点号组成
         "urls": {                            // url集合 [如果ruleFile不存在, 则必须有一个地址存在]
@@ -225,8 +225,5 @@ model.getUser( { sid: 'fdkaldjfgsakls0322yf8' } )
 }
 
 ```
-
-
-
 
 
