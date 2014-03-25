@@ -11,34 +11,78 @@
 
 ## 快速开始
 
+### 用例一 (接口配置->使用model)
 * 1.配置接口文件（接口文件默认放置在项目根目录下，命名为：interface.json）
 
 ```
 {
-	"title": "pad淘宝数据接口定义",
-	"version": "1.0.0",
-	"engine": "mockjs",
-	"rulebase": "./interfaceRules/",
-	"interfaces": [ {
-		"name": "搜索接口",
-		"id": "Search.getItems",
-		"urls": {
-			"online": "http://s.m.taobao.com/client/search.do"
-		}
-	}, {
-		"name": "热词推荐接口",
-		"id": "Search.suggest",
-		"urls": {
-			"online": "http://suggest.taobao.com/sug"
-		},
-		"status": "mock"
-	}, {
-		"name": "导航获取接口",
-		"id": "Search.getNav",
-		"urls": {
-			"online": "http://s.m.taobao.com/client/search.do"
-		}
-	} ]
+    "title": "pad淘宝数据接口定义",
+    "version": "1.0.0",
+    "engine": "mockjs",
+    "rulebase": "./interfaceRules/",
+    "interfaces": [ {
+        "name": "主搜索接口",
+        "id": "Search.getItems",
+        "urls": {
+            "online": "http://s.m.taobao.com/client/search.do"
+        }
+    }
+}
+```
+
+* 2.在代码中引入ModelProxy模块
+
+```js
+var ModelProxy = require( 'modelproxy' ); 
+```
+
+* 3.创建并使用ModelProxy
+
+```js
+// 创建model
+var model = new ModelProxy( {
+    // 方法名   :  配置文件中的接口ID
+    searchItems: 'Search.getItems'
+} );
+// 使用model, 注意调用方法所需要的参数即为实际接口所需要的参数。
+model.searchItems( {keyword: 'iphone6'} )
+    .done( function( data ) {
+        console.log( data );
+    } );
+```
+
+
+
+
+### 用例二
+* 1.配置接口文件（接口文件默认放置在项目根目录下，命名为：interface.json）
+
+```
+{
+    "title": "pad淘宝数据接口定义",
+    "version": "1.0.0",
+    "engine": "mockjs",
+    "rulebase": "./interfaceRules/",
+    "interfaces": [ {
+        "name": "搜索接口",
+        "id": "Search.getItems",
+        "urls": {
+            "online": "http://s.m.taobao.com/client/search.do"
+        }
+    }, {
+        "name": "热词推荐接口",
+        "id": "Search.suggest",
+        "urls": {
+            "online": "http://suggest.taobao.com/sug"
+        },
+        "status": "mock"
+    }, {
+        "name": "导航获取接口",
+        "id": "Search.getNav",
+        "urls": {
+            "online": "http://s.m.taobao.com/client/search.do"
+        }
+    } ]
 }
 ```
 
