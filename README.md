@@ -192,5 +192,41 @@ model.getUser( { sid: 'fdkaldjfgsakls0322yf8' } )
 * 第二步 添加接口对应的规则文件到ruleBase(./interfaceRules/)指定的文件夹。mock数据规则请参考 [http://mockjs.com]。
 启动程序后，ModelProxy即返回相关mock数据。
 
+# 配置文件详解
+
+``` json
+{
+    "title": "pad淘宝数据接口定义",             // [必填] 接口文档标题
+    "version": "1.0.0",                      // [必填] 版本号
+    "engine": "mockjs",                      // [选填] mock 引擎，目前只支持mockjs。不需要mock数据时可以不配置
+    "rulebase": "./interfaceRules/",         // [选填] mock规则文件夹路径。不需要mock数据时可以不配置 
+    "interfaces": [ {                   
+        "name": "获取购物车信息",               // [选填] 接口名称 生成文档有用
+        "id": "cart.getCart",                // [必填，全局唯一] 接口ID，必须由英文单词+点号组成
+        "urls": {                            // url集合 [如果ruleFile不存在, 则必须有一个地址存在]
+          "online": "http://url1",           // 线上地址
+          "prep": "http://url2",             // 预发地址
+          "daily": "http://url3",            // 日常地址
+        },
+        "ruleFile": "cart.getCart.rule.json",// [选填] 对应的数据规则文件，当Proxy Mock状态开启时回返回mock数据，
+                                             // 不配置时默认为id + ".rule.json"。
+        "isRuleStatic": true,                // 数据规则文件是否为静态，即在开启mock状态时，程序会将ruleFile按照静态文件读取
+                                             // 而非解析该规则文件生成数据，默认为false
+        "status": "online",                  // [选填] 当前代理状态，可以是urls中的某个键值(online, prep, daily)或者mock
+                                             // 如果不填，则代理状态依照全局设置的代理状态
+        "method": "post",                    // [选填] 请求方式，取值post|get 默认get
+        "dataType": "json",                  // [选填] 返回的数据格式, 取值 json|text, 默认为json
+        "isCookieNeeded": true,              // [选填] 是否需要传递cookie 默认false
+        "signed": false,                     // [选填] 是否需要签名，默认false
+        "timeout": 5000                      // [选填] 延时设置，默认10000
+    }, {
+        ...
+    } ]
+}
+
+```
+
+
+
 
 
