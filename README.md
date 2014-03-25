@@ -13,12 +13,12 @@
 
 ### 安装
 
-```shell
+```sh
 tnpm install midway-modelproxy
 ```
 
 ### 用例一 接口配置->使用model
-* 1.配置接口文件（接口文件默认放置在项目根目录下，命名为：interface.json）
+* 第一步 配置接口文件（接口文件默认放置在项目根目录下，命名为：interface.json）
 
 ```
 {
@@ -36,7 +36,7 @@ tnpm install midway-modelproxy
 }
 ```
 
-* 2.使用ModelProxy
+* 第二步 使用ModelProxy
 
 ```js
 // 引入模块
@@ -58,13 +58,13 @@ model.searchItems( { keyword: 'iphone6' } )
     } );
 ```
 
-### 用例二 (多接口model配置及使用)
-* 1.配置
+### 用例二 (model多接口配置及合并请求)
+* 配置
 
 ```json
-{   // 头部省略...
+{   // 头部配置省略...
     "interfaces": [ {
-        "name": "搜索接口",
+        "name": "主搜索搜索接口",
         "id": "Search.getItems",
         "urls": {
             "online": "http://s.m.taobao.com/client/search.do"
@@ -85,7 +85,7 @@ model.searchItems( { keyword: 'iphone6' } )
 }
 ```
 
-* 2.代码
+* 代码
 
 ```js
 // 引入模块
@@ -93,7 +93,7 @@ var ModelProxy = require( 'modelproxy' );
 
 // 创建model
 var model = new ModelProxy( 'Search.*' );
-// 或者这样创建: var model = new ModelProxy( 'Search.getItems' ); 此时getItems 会作为为方法名
+// 更多创建方式，请参考后文API
 
 // 调用自动生成的不同方法
 model.getItems( { keyword: 'iphone6' } )
@@ -118,6 +118,51 @@ model.suggest( { q: '女' } )
         console.log( data1, data2, data3 );
     } )
 
-
 ```
+
+### 用例三 (Model混合配置及依赖调用)
+
+* 配置
+
+```json
+{   // 头部配置省略...
+    "interfaces": [ {
+        "name": "用户信息查询接口",
+        "id": "Session.getUser",
+        "urls": {
+            "online": "http://s.m.taobao.com/client/search.do"
+        }
+    }, {
+        "name": "订单获取接口",
+        "id": "Order.getOrder",
+        "urls": {
+            "online": "http://suggest.taobao.com/sug"
+        }
+    } ]
+}
+```
+
+* 代码
+
+``` js
+// 引入模块
+var ModelProxy = require( 'modelproxy' ); 
+
+// 创建model
+var model = new ModelProxy( {
+    getUser: 'Session.getUser',
+    getMyOrderList: 'Order.getOrder'
+} );
+// 先获得用户id，然后再根据id号获得订单列表
+model.getUser( { sid: 'fdkaldjfgsakls0322yf8' } )
+    .done( function( data ) {
+        var uid = data.uid
+        this.getMyOrderList( { id: uid } )
+            .done( function( data ) {
+                console.log( data );
+            } );
+    } );
+```
+
+
 
