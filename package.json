@@ -1,7 +1,7 @@
 {
   "name": "midway-modelproxy",
   "description": "midway modelproxy module",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "shanfan <yingzhu.zyz@alibaba-inc.com>",
   "contributors": [
     {
@@ -9,6 +9,9 @@
       "email": "yingzhu.zyz@alibaba-inc.com"
     }
   ],
+  "dependencies": {
+    "mockjs": "*"
+  },
   "repository": {
     "type": "git",
     "url": "git@gitlab.alibaba-inc.com:tb/midway.git"
