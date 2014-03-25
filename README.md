@@ -228,27 +228,27 @@ model.getUser( { sid: 'fdkaldjfgsakls0322yf8' } )
 
 ### ModelProxy 对象创建方式
 
-1. 直接new
+* 直接new
 
 ```js
 var model = new ModelProxy( profile );
 
 ```
 
-2. 工厂创建
+* 工厂创建
 
 ```js
 var model = ModelProxy.create( profile );
 ```
 
 ### 创建ModelProxy 依赖的 profile 相关形式
-1. 接口ID  生成的对象会取ID最后'.'号后面的单词作为方法名
+* 接口ID  生成的对象会取ID最后'.'号后面的单词作为方法名
 
 ```js
 ModelProxy.create( 'Search.getItem' );
 ```
 
-2. 键值JSON对象   自定义方法名: 接口ID
+* 键值JSON对象   自定义方法名: 接口ID
 
 ```js
 ModelProxy.create( {
@@ -257,7 +257,7 @@ ModelProxy.create( {
 } );
 ```
 
-3. 数组形式 取最后 . 号后面的单词作为方法名
+* 数组形式 取最后 . 号后面的单词作为方法名
 下例中生成的方法调用名依次为: Cart_getItem, getItem, suggest, getName
 
 ```js
@@ -265,7 +265,7 @@ ModelProxy.create( [ 'Cart.getItem', 'Search.getItem', 'Search.suggest', 'Sessio
 
 ```
 
-4. 前缀形式 (推荐使用)
+* 前缀形式 (推荐使用)
 
 ```js
 ModelProxy.create( 'Search.*' );
