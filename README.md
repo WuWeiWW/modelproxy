@@ -18,10 +18,10 @@
 tnpm install midway-modelproxy
 ```
 
-### 用例一 接口配置->使用model
+### 用例一 (接口配置->使用model)
 * 第一步 配置接口文件（接口文件默认放置在项目根目录下，命名为：interface.json）
 
-```
+```json
 {
     "title": "pad淘宝数据接口定义",
     "version": "1.0.0",
@@ -117,7 +117,7 @@ model.suggest( { q: '女' } )
     .done( function( data1, data2, data3 ) {
         // 参数顺序与方法调用顺序一致
         console.log( data1, data2, data3 );
-    } )
+    } );
 
 ```
 
@@ -165,5 +165,32 @@ model.getUser( { sid: 'fdkaldjfgsakls0322yf8' } )
     } );
 ```
 
+### 用例四 配置mock代理
+* 第一步 在相关接口配置段落中启用mock
+
+```json
+{
+    "title": "pad淘宝数据接口定义",
+    "version": "1.0.0",
+    "engine": "mockjs",                <-- 指定mock引擎
+    "rulebase": "./interfaceRules/",   <-- 指定存放相关mock规则文件的目录
+    "interfaces": [ {
+        "name": "主搜索接口",
+        "id": "Search.getItems",
+        "ruleFile": "Search.getItems.rule.json",  <-- 指定数据mock规则文件名，如果不配置，则将默认设置为 id + '.rule.json'
+        "urls": {
+            "online": "http://s.m.taobao.com/client/search.do",
+            "prep": "http://s.m.taobao.com/client/search.do",
+            "daily": "http://daily.taobao.net/client/search.do"
+        },
+        status: 'mock'                     <-- 启用mock状态
+
+    } ]
+}
+```
+
+* 第二步 添加接口对应的规则文件到ruleBase(./interfaceRules/)指定的文件夹。mock数据规则请参考 [http://mockjs.com]
+
+* 第三步 启动程序即可获得mock数据
 
 
