@@ -189,8 +189,8 @@ model.getUser( { sid: 'fdkaldjfgsakls0322yf8' } )
 }
 ```
 
-* 第二步 添加接口对应的规则文件到ruleBase(./interfaceRules/)指定的文件夹。mock数据规则请参考 [http://mockjs.com]
+* 第二步 添加接口对应的规则文件到ruleBase(./interfaceRules/)指定的文件夹。mock数据规则请参考 [http://mockjs.com]。
+启动程序后，ModelProxy即返回相关mock数据。
 
-* 第三步 启动程序即可获得mock数据
 
 
