@@ -11,7 +11,13 @@
 
 ## 快速开始
 
-### 用例一 (接口配置->使用model)
+### 安装
+
+```shell
+tnpm install midway-modelproxy
+```
+
+### 用例一 接口配置->使用model
 * 1.配置接口文件（接口文件默认放置在项目根目录下，命名为：interface.json）
 
 ```
@@ -26,43 +32,37 @@
         "urls": {
             "online": "http://s.m.taobao.com/client/search.do"
         }
-    }
+    } ]
 }
 ```
 
-* 2.在代码中引入ModelProxy模块
+* 2.使用ModelProxy
 
 ```js
+// 引入模块
 var ModelProxy = require( 'modelproxy' ); 
-```
 
-* 3.创建并使用ModelProxy
-
-```js
 // 创建model
 var model = new ModelProxy( {
-    // 方法名   :  配置文件中的接口ID
-    searchItems: 'Search.getItems'
+    searchItems: 'Search.getItems'  // 自定义方法名: 配置文件中的定义的接口ID
 } );
-// 使用model, 注意调用方法所需要的参数即为实际接口所需要的参数。
-model.searchItems( {keyword: 'iphone6'} )
+// 或者这样创建: var model = new ModelProxy( 'Search.getItems' ); 此时getItems 会作为为方法名
+
+// 使用model, 注意: 调用方法所需要的参数即为实际接口所需要的参数。
+model.searchItems( { keyword: 'iphone6' } )
     .done( function( data ) {
         console.log( data );
+    } )
+    .error( function( err ) {
+        console.log( err );
     } );
 ```
 
+### 用例二 (多接口model配置及使用)
+* 1.配置
 
-
-
-### 用例二
-* 1.配置接口文件（接口文件默认放置在项目根目录下，命名为：interface.json）
-
-```
-{
-    "title": "pad淘宝数据接口定义",
-    "version": "1.0.0",
-    "engine": "mockjs",
-    "rulebase": "./interfaceRules/",
+```json
+{   // 头部省略...
     "interfaces": [ {
         "name": "搜索接口",
         "id": "Search.getItems",
@@ -74,8 +74,7 @@ model.searchItems( {keyword: 'iphone6'} )
         "id": "Search.suggest",
         "urls": {
             "online": "http://suggest.taobao.com/sug"
-        },
-        "status": "mock"
+        }
     }, {
         "name": "导航获取接口",
         "id": "Search.getNav",
@@ -84,5 +83,41 @@ model.searchItems( {keyword: 'iphone6'} )
         }
     } ]
 }
+```
+
+* 2.代码
+
+```js
+// 引入模块
+var ModelProxy = require( 'modelproxy' ); 
+
+// 创建model
+var model = new ModelProxy( 'Search.*' );
+// 或者这样创建: var model = new ModelProxy( 'Search.getItems' ); 此时getItems 会作为为方法名
+
+// 调用自动生成的不同方法
+model.getItems( { keyword: 'iphone6' } )
+    .done( function( data ) {
+        console.log( data );
+    } );
+
+model.suggest( { q: '女' } )
+    .done( function( data ) {
+        console.log( data );
+    } )
+    .error( function( err ) {
+        console.log( err );
+    } );
+
+// 合并请求
+model.suggest( { q: '女' } )
+    .getItems( { keyword: 'iphone6' } )
+    .getNav( { key: '流行服装' } )
+    .done( function( data1, data2, data3 ) {
+        // 参数顺序与方法调用顺序一致
+        console.log( data1, data2, data3 );
+    } )
+
+
 ```
 
