@@ -26,7 +26,6 @@ app.use(function( req, res ) {
 
 } );*/
 
-app	//.use( connect.query() )
-   .use( '/model/', ModelProxy.Interceptor );
+app.use( '/model/', ModelProxy.Interceptor );
 
 app.listen( 3000 );
