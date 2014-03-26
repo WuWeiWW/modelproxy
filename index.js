@@ -10,6 +10,7 @@ ModelProxy.use( ProxyFactory );
 
 module.exports = ModelProxy;
 
+
 /*
 var m = new ModelProxy('Search.*');
 m.getItems({q: 'jackjones'})
@@ -32,7 +33,7 @@ m.getItems({q: 'jackjones'})
 
  } );
 */
-
+/*
 var m = new ModelProxy( 'Search.*' );
 m.suggest( {q: 'jackjones' } )
     .done( function( data ) {

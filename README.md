@@ -4,7 +4,7 @@
 由于淘宝业务复杂，后端接口方式多种多样(MTop, Modulet, HSF...)。然而在使用Node开发web应用时，我们希望有一种统一方式访问这些代理资源的基础框架，为开发者屏蔽接口访问差异，同时提供友好简洁的数据接口使用方式。于是就有了 midway-modelproxy 这个构件。使用midway-modelproxy，开发者的单一编码工作量不会明显的减少，但是可以提供如下好处：
 
 1. 所有接口访问方式统一，不同的开发者对于接口访问代码编写方式统一，含义清晰，降低维护难度。
-2. 框架内部内部工厂+单例模式，实现接口一次配置多次复用。并且开发者可以随意定制组装自己的业务Model。
+2. 框架内部内部工厂+单例模式，实现接口一次配置多次复用。并且开发者可以随意定制组装自己的业务Model(依赖注入)。
 3. 可以非常方便地实现线上，日常，预发环境的切换。
 4. 支持不同的mock引擎（目前一期只支持mockjs），提供mock数据非常方便。
 5. 使用接口配置文件，对接口的依赖描述做统一的管理，避免散落在各个代码之中。
@@ -89,10 +89,8 @@ model.searchItems( { keyword: 'iphone6' } )
 * 代码
 
 ```js
-// 引入模块
 var ModelProxy = require( 'modelproxy' ); 
 
-// 创建model
 var model = new ModelProxy( 'Search.*' );
 // 更多创建方式，请参考后文API
 
@@ -145,10 +143,8 @@ model.suggest( { q: '女' } )
 * 代码
 
 ``` js
-// 引入模块
 var ModelProxy = require( 'modelproxy' ); 
 
-// 创建model
 var model = new ModelProxy( {
     getUser: 'Session.getUser',
     getMyOrderList: 'Order.getOrder'
@@ -191,6 +187,20 @@ model.getUser( { sid: 'fdkaldjfgsakls0322yf8' } )
 * 第二步 添加接口对应的规则文件到ruleBase(./interfaceRules/)指定的文件夹。mock数据规则请参考 [http://mockjs.com]。
 启动程序后，ModelProxy即返回相关mock数据。
 
+
+### 用例五 使用ModelProxy 拦截请求
+
+```js
+var app = require( 'connect' )();
+var ModelProxy = require( 'modelproxy' );
+
+// 指定需要拦截的路径
+app.use( '/model', ModelProxy.Interceptor );
+
+// 此时可直接通过浏览器访问 /model/[interfaceid] 调用相关接口 
+``` 
+
+
 # 配置文件详解
 
 ``` json
@@ -198,7 +208,8 @@ model.getUser( { sid: 'fdkaldjfgsakls0322yf8' } )
     "title": "pad淘宝数据接口定义",             // [必填] 接口文档标题
     "version": "1.0.0",                      // [必填] 版本号
     "engine": "mockjs",                      // [选填] mock 引擎，目前只支持mockjs。不需要mock数据时可以不配置
-    "rulebase": "./interfaceRules/",         // [选填] mock规则文件夹路径。不需要mock数据时可以不配置 
+    "rulebase": "./interfaceRules/",         // [选填] mock规则文件夹路径。不需要mock数据时可以不配置
+    "status": "online",                      // [必填] 全局代理状态，取值只能是 interface.urls中出现过的键值或者mock
     "interfaces": [ {
         "name": "获取购物车信息",               // [选填] 接口名称 生成文档有用
         "desc": "接口负责人: 善繁",             // [选填] 接口描述 生成文档有用
@@ -219,7 +230,8 @@ model.getUser( { sid: 'fdkaldjfgsakls0322yf8' } )
         "dataType": "json",                  // [选填] 返回的数据格式, 取值 json|text, 默认为json
         "isCookieNeeded": true,              // [选填] 是否需要传递cookie 默认false
         "signed": false,                     // [选填] 是否需要签名，默认false
-        "timeout": 5000                      // [选填] 延时设置，默认10000
+        "timeout": 5000,                     // [选填] 延时设置，默认10000
+        "intercepted": true                  // [选填] 是否拦截请求，默认为true。
     }, {
         ...
     } ]
