@@ -297,7 +297,7 @@ ModelProxy.create( 'Search.*' );
 
 ### ModelProxy对象方法
 
-* .<method>( params )
+* .method( params )
 method为创建model时动态生成，参数 params{Object}, 为请求接口所需要的参数键值对。
 
 * .done( callback, errCallback )
