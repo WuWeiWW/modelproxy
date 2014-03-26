@@ -10,6 +10,11 @@
 5. 使用接口配置文件，对接口的依赖描述做统一的管理，避免散落在各个代码之中。
 6. 接口配置文件本身是结构化的描述文档，可以使用midway-if(开发中)构件，自动生成文档。也可使用他做相关自动化接口测试，使整个开发过程形成一个闭环。
 
+# 使用说明
+
+使用ModelProxy之前，您需要在工程根目录下创建名为interface.json的配置文件。该文件定义了工程项目中所需要使用到的接口集合
+(详细配置说明见后文)。定义之后，您可以在代码中按照需要引入不同的接口，创建与业务相关的Model对象。
+
 # 快速开始
 
 ### 安装
@@ -23,10 +28,11 @@ tnpm install midway-modelproxy
 
 ```json
 {
-    "title": "pad淘宝数据接口定义",
+    "title": "pad淘宝项目数据接口集合定义",
     "version": "1.0.0",
     "engine": "mockjs",
     "rulebase": "./interfaceRules/",
+    "status": "online",
     "interfaces": [ {
         "name": "主搜索接口",
         "id": "Search.getItems",
@@ -44,13 +50,13 @@ tnpm install midway-modelproxy
 var ModelProxy = require( 'modelproxy' ); 
 
 // 创建model
-var model = new ModelProxy( {
+var searchModel = new ModelProxy( {
     searchItems: 'Search.getItems'  // 自定义方法名: 配置文件中的定义的接口ID
 } );
-// 或者这样创建: var model = new ModelProxy( 'Search.getItems' ); 此时getItems 会作为为方法名
+// 或者这样创建: var searchModel = new ModelProxy( 'Search.getItems' ); 此时getItems 会作为为方法名
 
 // 使用model, 注意: 调用方法所需要的参数即为实际接口所需要的参数。
-model.searchItems( { keyword: 'iphone6' } )
+searchModel.searchItems( { keyword: 'iphone6' } )
     .done( function( data ) {
         console.log( data );
     } )
@@ -160,7 +166,7 @@ model.getUser( { sid: 'fdkaldjfgsakls0322yf8' } )
     } );
 ```
 
-### 用例四 配置mock代理
+### 用例四 (配置mock代理)
 * 第一步 在相关接口配置段落中启用mock
 
 ```json
@@ -188,7 +194,7 @@ model.getUser( { sid: 'fdkaldjfgsakls0322yf8' } )
 启动程序后，ModelProxy即返回相关mock数据。
 
 
-### 用例五 使用ModelProxy 拦截请求
+### 用例五 (使用ModelProxy拦截请求)
 
 ```js
 var app = require( 'connect' )();
@@ -200,12 +206,11 @@ app.use( '/model', ModelProxy.Interceptor );
 // 此时可直接通过浏览器访问 /model/[interfaceid] 调用相关接口 
 ``` 
 
-
 # 配置文件详解
 
 ``` json
 {
-    "title": "pad淘宝数据接口定义",             // [必填] 接口文档标题
+    "title": "pad淘宝项目数据接口集合定义",       // [必填] 接口文档标题
     "version": "1.0.0",                      // [必填] 版本号
     "engine": "mockjs",                      // [选填] mock 引擎，目前只支持mockjs。不需要mock数据时可以不配置
     "rulebase": "./interfaceRules/",         // [选填] mock规则文件夹路径。不需要mock数据时可以不配置
@@ -232,9 +237,13 @@ app.use( '/model', ModelProxy.Interceptor );
         "signed": false,                     // [选填] 是否需要签名，默认false
         "timeout": 5000,                     // [选填] 延时设置，默认10000
         "intercepted": true                  // [选填] 是否拦截请求，默认为true。
+        // filter...      // 未完待续
     }, {
         ...
-    } ]
+    } ],
+    combo: {
+        // 未完待续
+    }
 }
 ```
 
@@ -255,7 +264,7 @@ var model = new ModelProxy( profile );
 var model = ModelProxy.create( profile );
 ```
 
-### 创建ModelProxy 依赖的 profile 相关形式
+### 创建ModelProxy对象依赖的 profile 相关形式
 * 接口ID  生成的对象会取ID最后'.'号后面的单词作为方法名
 
 ```js
@@ -288,7 +297,7 @@ ModelProxy.create( 'Search.*' );
 
 ### ModelProxy对象方法
 
-* .\[method\]( params )
+* .<method>( params )
 method为创建model时动态生成，参数 params{Object}, 为请求接口所需要的参数键值对。
 
 * .done( callback, errCallback )
