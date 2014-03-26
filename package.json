@@ -11,7 +11,8 @@
   ],
   "dependencies": {
     "mockjs": "*",
-    "iconv-lite": "*"
+    "iconv-lite": "*",
+    "bufferhelper": "*"
   },
   "repository": {
     "type": "git",

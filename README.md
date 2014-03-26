@@ -4,7 +4,7 @@
 由于淘宝业务复杂，后端接口方式多种多样(MTop, Modulet, HSF...)。然而在使用Node开发web应用时，我们希望有一种统一方式访问这些代理资源的基础框架，为开发者屏蔽接口访问差异，同时提供友好简洁的数据接口使用方式。于是就有了 midway-modelproxy 这个构件。使用midway-modelproxy，开发者的单一编码工作量不会明显的减少，但是可以提供如下好处：
 
 1. 所有接口访问方式统一，不同的开发者对于接口访问代码编写方式统一，含义清晰，降低维护难度。
-2. 框架内部内部工厂+单例模式，实现接口一次配置多次复用。并且开发者可以随意定制组装自己的业务Model(依赖注入)。
+2. 框架内部采用工厂+单例模式，实现接口一次配置多次复用。并且开发者可以随意定制组装自己的业务Model(依赖注入)。
 3. 可以非常方便地实现线上，日常，预发环境的切换。
 4. 支持不同的mock引擎（目前一期只支持mockjs），提供mock数据非常方便。
 5. 使用接口配置文件，对接口的依赖描述做统一的管理，避免散落在各个代码之中。
@@ -53,7 +53,7 @@ var ModelProxy = require( 'modelproxy' );
 var searchModel = new ModelProxy( {
     searchItems: 'Search.getItems'  // 自定义方法名: 配置文件中的定义的接口ID
 } );
-// 或者这样创建: var searchModel = new ModelProxy( 'Search.getItems' ); 此时getItems 会作为为方法名
+// 或者这样创建: var searchModel = new ModelProxy( 'Search.getItems' ); 此时getItems 会作为方法名
 
 // 使用model, 注意: 调用方法所需要的参数即为实际接口所需要的参数。
 searchModel.searchItems( { keyword: 'iphone6' } )
@@ -203,14 +203,14 @@ var ModelProxy = require( 'modelproxy' );
 // 指定需要拦截的路径
 app.use( '/model', ModelProxy.Interceptor );
 
-// 此时可直接通过浏览器访问 /model/[interfaceid] 调用相关接口 
+// 此时可直接通过浏览器访问 /model/[interfaceid] 调用相关接口
 ``` 
 
 # 配置文件详解
 
-``` json
+``` js
 {
-    "title": "pad淘宝项目数据接口集合定义",       // [必填] 接口文档标题
+    "title": "pad淘宝项目数据接口集合定义",      // [必填] 接口文档标题
     "version": "1.0.0",                      // [必填] 版本号
     "engine": "mockjs",                      // [选填] mock 引擎，目前只支持mockjs。不需要mock数据时可以不配置
     "rulebase": "./interfaceRules/",         // [选填] mock规则文件夹路径。不需要mock数据时可以不配置
@@ -230,10 +230,12 @@ app.use( '/model', ModelProxy.Interceptor );
         "isRuleStatic": true,                // 数据规则文件是否为静态，即在开启mock状态时，程序会将ruleFile按照静态文件读取
                                              // 而非解析该规则文件生成数据，默认为false
         "status": "online",                  // [选填] 当前代理状态，可以是urls中的某个键值(online, prep, daily)或者mock
-                                             // 如果不填，则代理状态依照全局设置的代理状态
+                                             // 如果不填，则代理状态依照全局设置的代理状态  gh ,vb 
         "method": "post",                    // [选填] 请求方式，取值post|get 默认get
         "dataType": "json",                  // [选填] 返回的数据格式, 取值 json|text, 默认为json
         "isCookieNeeded": true,              // [选填] 是否需要传递cookie 默认false
+        "encoding": "utf8"                   // [选填] 取值可以是常用编码类型 [ 'utf8', 'gbk', 'gb2312' ] 或者 'raw'
+                                             // 如果设置为raw 则直接返回2进制，默认utf8
         "signed": false,                     // [选填] 是否需要签名，默认false
         "timeout": 5000,                     // [选填] 延时设置，默认10000
         "intercepted": true                  // [选填] 是否拦截请求，默认为true。
@@ -326,13 +328,6 @@ ruleBase字段所指定的文件夹中。
 }
 
 ```
-
-
-
-
-
-
-
 
 
 

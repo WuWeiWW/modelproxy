@@ -1,47 +1,53 @@
 {
-	"title": "pad淘宝数据接口定义",
-	"version": "1.0.0",
-	"engine": "mockjs",
-	"rulebase": "./interfaceRules/",
-	"status": "online",
-	"interfaces": [ {
-		"name": "获取购物车",
-		"id": "Cart.getCart",
-		"urls": {
-			"online": "http://url1", 
-			"prep": "http://url2",   
-			"daily": "http://url3"
-		},
-		"ruleFile": "cart.getCart.rule.json",
-		"status": "mock",     
-		"isRuleStatic": true,
-		"method": "post",
-		"dataType": "json",
-		"encoding": "gbk",
-		"isCookieNeeded": true,
-		"signed": false,       
-		"timeout": 5000
-	}, {
-		"name": "搜索接口",
-		"id": "Search.getItems",
-		"urls": {
-			"online": "http://s.m.taobao.com/client/search.do"
-		},
-		"encoding": "utf8"
-	}, {
-		"name": "热词推荐接口",
-		"id": "Search.suggest",
-		"urls": {
-			"online": "http://suggest.taobao.com/sug"
-		}
-	}, {
-		"name": "导航获取接口",
-		"id": "Search.getNav",
-		"urls": {
-			"online": "http://s.m.taobao.com/client/search.do"
-		}
-	} ],
-	"combo": {
-		"getMyData": [ "Cart.getCart", "Search.suggest" ]
-	}
+    "title": "pad淘宝数据接口定义",
+    "version": "1.0.0",
+    "engine": "mockjs",
+    "rulebase": "../interfaceRules/",
+    "status": "online",
+    "interfaces": [ {
+        "name": "detail",
+        "id": "Detail.get",
+        "urls": {
+            "online": "http://item.taobao.com/modulet/data.do"
+        },
+        "encoding": "gbk"
+    }, {
+        "name": "获取购物车",
+        "id": "Cart.getCart",
+        "urls": {
+            "online": "http://url1",
+            "prep": "http://url2",
+            "daily": "http://url3"
+        },
+        "ruleFile": "Cart.getCart.rule.json",
+        "status": "mock",
+        "isRuleStatic": true,
+        "method": "post",
+        "dataType": "json",
+        "encoding": "utf8",
+        "isCookieNeeded": true,
+        "signed": false,
+        "timeout": 5000
+    }, {
+        "name": "搜索接口",
+        "id": "Search.getItems",
+        "urls": {
+            "online": "http://s.m.taobao.com/client/search.do"
+        }
+    }, {
+        "name": "热词推荐接口",
+        "id": "Search.suggest",
+        "urls": {
+            "online": "http://suggest.taobao.com/sug"
+        }
+    }, {
+        "name": "导航获取接口",
+        "id": "Search.getNav",
+        "urls": {
+            "online": "http://s.m.taobao.com/client/search.do"
+        }
+    } ],
+    "combo": {
+        "getMyData": [ "Cart.getCart", "Search.suggest" ]
+    }
 }
