@@ -2,7 +2,7 @@
     "title": "pad淘宝数据接口定义",
     "version": "1.0.0",
     "engine": "mockjs",
-    "rulebase": "./interfaceRules/",
+    "rulebase": "./interfaceRules_sample/",
     "status": "online",
     "interfaces": [ {
         "name": "detail",
