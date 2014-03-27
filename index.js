@@ -1,3 +1,1 @@
-var ModelProxy = require( './lib/modelproxy' );
-
-module.exports = ModelProxy;
+module.exports = require( './lib/modelproxy' );

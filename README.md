@@ -23,7 +23,7 @@
 tnpm install midway-modelproxy
 ```
 
-### 用例一 (接口配置->使用model)
+### 用例一 (接口文件配置->引入接口配置文件->使用model)
 * 第一步 配置接口文件（接口文件默认放置在项目根目录下，命名为：interface_sample.json）
 
 ```json
@@ -43,7 +43,7 @@ tnpm install midway-modelproxy
 }
 ```
 
-* 第二步 使用ModelProxy
+* 第二步 在代码中引入ModelProxy模块，并且初始化引入接口配置文件
 
 ```js
 // 引入模块
@@ -51,7 +51,11 @@ var ModelProxy = require( 'modelproxy' );
 
 // 初始化引入接口配置文件
 ModelProxy.init( './interface_sample.json' );
+```
 
+* 第三步 使用ModelProxy
+
+```js
 // 创建model
 var searchModel = new ModelProxy( {
     searchItems: 'Search.getItems'  // 自定义方法名: 配置文件中的定义的接口ID
