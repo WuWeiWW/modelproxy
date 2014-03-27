@@ -24,7 +24,7 @@ tnpm install midway-modelproxy
 ```
 
 ### 用例一 (接口配置->使用model)
-* 第一步 配置接口文件（接口文件默认放置在项目根目录下，命名为：interface.json）
+* 第一步 配置接口文件（接口文件默认放置在项目根目录下，命名为：interface_sample.json）
 
 ```json
 {
@@ -320,7 +320,8 @@ method为创建model时动态生成，参数 params{Object}, 为请求接口所�
 
 ### rule.json 文件
 当mock状态开启时，mock引擎会读取与接口定义相对应的rule.json规则文件，生成相应的数据。该文件应该位于interface.json配置文件中
-ruleBase字段所指定的文件夹中。
+ruleBase字段所指定的文件夹中。 (建议该文件夹与interface配置文件同级)
+
 
 ### rule.json 文件样式
 
