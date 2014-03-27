@@ -19,10 +19,8 @@
             "prep": "http://url2",
             "daily": "http://url3"
         },
-        "ruleFile": "Cart.getCart.rule.json",
         "status": "mock",
         "isRuleStatic": true,
-        "method": "post",
         "dataType": "json",
         "encoding": "utf8",
         "isCookieNeeded": true,
@@ -39,7 +37,8 @@
         "id": "Search.suggest",
         "urls": {
             "online": "http://suggest.taobao.com/sug"
-        }
+        },
+        "intercepted": false
     }, {
         "name": "导航获取接口",
         "id": "Search.getNav",

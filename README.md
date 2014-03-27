@@ -49,6 +49,9 @@ tnpm install midway-modelproxy
 // 引入模块
 var ModelProxy = require( 'modelproxy' ); 
 
+// 初始化引入接口配置文件
+ModelProxy.init( './interface_sample.json' );
+
 // 创建model
 var searchModel = new ModelProxy( {
     searchItems: 'Search.getItems'  // 自定义方法名: 配置文件中的定义的接口ID
@@ -97,8 +100,10 @@ searchModel.searchItems( { keyword: 'iphone6' } )
 ```js
 var ModelProxy = require( 'modelproxy' ); 
 
-var model = new ModelProxy( 'Search.*' );
+ModelProxy.init( './interface_sample.json' );
+
 // 更多创建方式，请参考后文API
+var model = new ModelProxy( 'Search.*' );
 
 // 调用自动生成的不同方法
 model.getItems( { keyword: 'iphone6' } )
@@ -199,6 +204,7 @@ model.getUser( { sid: 'fdkaldjfgsakls0322yf8' } )
 ```js
 var app = require( 'connect' )();
 var ModelProxy = require( 'modelproxy' );
+ModelProxy.init( './interface_sample.json' );
 
 // 指定需要拦截的路径
 app.use( '/model', ModelProxy.Interceptor );
@@ -210,7 +216,7 @@ app.use( '/model', ModelProxy.Interceptor );
 
 ``` js
 {
-    "title": "pad淘宝项目数据接口集合定义",      // [必填] 接口文档标题
+    "title": "pad淘宝项目数据接口集合定义",       // [必填] 接口文档标题
     "version": "1.0.0",                      // [必填] 版本号
     "engine": "mockjs",                      // [选填] mock 引擎，目前只支持mockjs。不需要mock数据时可以不配置
     "rulebase": "./interfaceRules/",         // [选填] mock规则文件夹路径。不需要mock数据时可以不配置
@@ -235,10 +241,11 @@ app.use( '/model', ModelProxy.Interceptor );
         "dataType": "json",                  // [选填] 返回的数据格式, 取值 json|text, 默认为json
         "isCookieNeeded": true,              // [选填] 是否需要传递cookie 默认false
         "encoding": "utf8"                   // [选填] 取值可以是常用编码类型 [ 'utf8', 'gbk', 'gb2312' ] 或者 'raw'
-                                             // 如果设置为raw 则直接返回2进制，默认utf8
+                                             // 如果设置为raw 则直接返回2进制buffer，默认为utf8
         "signed": false,                     // [选填] 是否需要签名，默认false
         "timeout": 5000,                     // [选填] 延时设置，默认10000
-        "intercepted": true                  // [选填] 是否拦截请求，默认为true。
+        "intercepted": true                  // [选填] 是否拦截请求，默认为true
+        // format         // 未完待续
         // filter...      // 未完待续
     }, {
         ...
@@ -266,7 +273,7 @@ var model = new ModelProxy( profile );
 var model = ModelProxy.create( profile );
 ```
 
-### 创建ModelProxy对象依赖的 profile 相关形式
+### 创建ModelProxy对象时指定的 profile 相关形式
 * 接口ID  生成的对象会取ID最后'.'号后面的单词作为方法名
 
 ```js

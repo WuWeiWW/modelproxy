@@ -1,7 +1,0 @@
-{
-  "interfaceDefinitionPath": "./ifconfig", // 可以是本地路径文件 也可以是htpp://url
-  // "urlNames": ["url", "dailyUrl", "prepUrl"],
-  // "defaultUrlName": "url"
-  "defaultStatus": "mock",
-  "appkey": 1168
-}
