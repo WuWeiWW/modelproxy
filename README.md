@@ -217,6 +217,7 @@ app.use( '/model', ModelProxy.Interceptor );
 ``` 
 
 # 配置文件详解
+---
 
 ``` js
 {
