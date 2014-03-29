@@ -1,8 +1,5 @@
 # midway-modelproxy
 ===
-
-![](http://work.taobao.net/attachments/download/2929/Midway.png)
-
 # 简介
 淘系的技术大背景下，必须依赖Java提供稳定的后端接口服务。在这样环境下，Node Server在实际应用中的一个主要作用即是代理(Proxy)功能。
 由于淘宝业务复杂，后端接口方式多种多样(MTop, Modulet, HSF...)。然而在使用Node开发web应用时，我们希望有一种统一方式访问这些代理资源的基础框架，为开发者屏蔽接口访问差异，同时提供友好简洁的数据接口使用方式。于是就有了 midway-modelproxy 这个构件。使用midway-modelproxy，开发者的单一编码工作量不会明显的减少，但是可以提供如下好处：
@@ -348,6 +345,8 @@ ruleBase字段所指定的文件夹中。 (建议该文件夹与interface配置�
 
 ```
 
+# [附] 中途岛整体架构图及modelproxy所处位置
+![](http://work.taobao.net/attachments/download/2929/Midway.png)
 
 
 
