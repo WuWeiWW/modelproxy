@@ -1,44 +1,28 @@
 {
-    "title": "pad淘宝数据接口定义",
+    "title": "midway example interface configuration",
     "version": "1.0.0",
     "engine": "mockjs",
-    "rulebase": "./interfaceRules/",
+    "rulebase": "./interface/",
     "status": "online",
     "interfaces": [ {
-        "name": "detail",
-        "id": "Detail.get",
+        "name": "我的购物车",
+        "id": "Cart.getMyCart",
         "urls": {
-            "online": "http://item.taobao.com/modulet/data.do"
+            "online": "http://cart.taobao.com/json/asyncGetMyCart.do"
         },
         "encoding": "gbk"
     }, {
-        "name": "获取购物车",
-        "id": "Cart.getCart",
+        "name": "主搜索接口",
+        "id": "Search.list",
         "urls": {
-            "online": "http://url1",
-            "prep": "http://url2",
-            "daily": "http://url3"
-        },
-        "status": "mock",
-        "isRuleStatic": true,
-        "dataType": "json",
-        "encoding": "utf8",
-        "isCookieNeeded": true,
-        "signed": false,
-        "timeout": 5000
-    }, {
-        "name": "搜索接口",
-        "id": "Search.getItems",
-        "urls": {
-            "online": "http://s.m.taobao.com/client/search.do"
+            "online": "http://api.s.m.taobao.com/search.json"
         }
     }, {
         "name": "热词推荐接口",
         "id": "Search.suggest",
         "urls": {
             "online": "http://suggest.taobao.com/sug"
-        },
-        "intercepted": false
+        }
     }, {
         "name": "导航获取接口",
         "id": "Search.getNav",

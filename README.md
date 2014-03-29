@@ -64,6 +64,7 @@ var searchModel = new ModelProxy( {
 
 // 使用model, 注意: 调用方法所需要的参数即为实际接口所需要的参数。
 searchModel.searchItems( { keyword: 'iphone6' } )
+    // !注意 必须调用 done 方法指定回调函数，来取得上面异步调用searchItems获得的数据!
     .done( function( data ) {
         console.log( data );
     } )
@@ -238,15 +239,16 @@ app.use( '/model', ModelProxy.Interceptor );
         },
         "ruleFile": "cart.getCart.rule.json",// [选填] 对应的数据规则文件，当Proxy Mock状态开启时回返回mock数据，
                                              // 不配置时默认为id + ".rule.json"。
-        "isRuleStatic": true,                // 数据规则文件是否为静态，即在开启mock状态时，程序会将ruleFile按照静态文件读取
-                                             // 而非解析该规则文件生成数据，默认为false
+        "isRuleStatic": true,                // [选填] 数据规则文件是否为静态，即在开启mock状态时，程序会将ruleFile
+                                             // 按照静态文件读取, 而非解析该规则文件生成数据，默认为false
         "status": "online",                  // [选填] 当前代理状态，可以是urls中的某个键值(online, prep, daily)或者mock
-                                             // 如果不填，则代理状态依照全局设置的代理状态  gh ,vb 
+                                             // 如果不填，则代理状态依照全局设置的代理状态
         "method": "post",                    // [选填] 请求方式，取值post|get 默认get
         "dataType": "json",                  // [选填] 返回的数据格式, 取值 json|text, 默认为json
         "isCookieNeeded": true,              // [选填] 是否需要传递cookie 默认false
-        "encoding": "utf8"                   // [选填] 取值可以是常用编码类型 [ 'utf8', 'gbk', 'gb2312' ] 或者 'raw'
-                                             // 如果设置为raw 则直接返回2进制buffer，默认为utf8
+        "encoding": "utf8"                   // [选填] 代理的数据源编码类型。取值可以是常用编码类型'utf8', 'gbk', 
+                                             // 'gb2312' 或者 'raw' 如果设置为raw则直接返回2进制buffer，默认为utf8。
+                                             //  注意，不论数据源原来为何种编码，代理之后皆以utf8编码输出。
         "signed": false,                     // [选填] 是否需要签名，默认false
         "timeout": 5000,                     // [选填] 延时设置，默认10000
         "intercepted": true                  // [选填] 是否拦截请求，默认为true
