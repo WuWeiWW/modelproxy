@@ -345,7 +345,7 @@ ruleBase字段所指定的文件夹中。 (建议该文件夹与interface配置�
 
 ```
 
-# [附] 中途岛整体架构图及modelproxy所处位置
+## [附] 中途岛整体架构图及modelproxy所处位置
 ![](http://work.taobao.net/attachments/download/2929/Midway.png)
 
 
