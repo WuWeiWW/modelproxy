@@ -25,7 +25,7 @@
 tnpm install midway-modelproxy
 ```
 
-### 用例一 (接口文件配置->引入接口配置文件->创建并使用model)
+### 用例一 接口文件配置->引入接口配置文件->创建并使用model
 * 第一步 配置接口文件命名为：interface_sample.json，并将其放在工程根目录下。
 注意：整个项目有且只有一个接口配置文件，其interfaces字段下定义了多个接口。在本例中，仅仅配置了一个主搜接口。
 
@@ -76,7 +76,7 @@ searchModel.searchItems( { keyword: 'iphone6' } )
     } );
 ```
 
-### 用例二 (model多接口配置及合并请求)
+### 用例二 model多接口配置及合并请求
 * 配置
 
 ```json
@@ -133,7 +133,7 @@ model.suggest( { q: '女' } )
     } );
 ```
 
-### 用例三 (Model混合配置及依赖调用)
+### 用例三 Model混合配置及依赖调用
 
 * 配置
 
@@ -173,7 +173,7 @@ model.getUser( { sid: 'fdkaldjfgsakls0322yf8' } )
     } );
 ```
 
-### 用例四 (配置mock代理)
+### 用例四 配置mock代理
 * 第一步 在相关接口配置段落中启用mock
 
 ```json
@@ -192,7 +192,6 @@ model.getUser( { sid: 'fdkaldjfgsakls0322yf8' } )
             "daily": "http://daily.taobao.net/client/search.do"
         },
         status: 'mock'                     <-- 启用mock状态
-
     } ]
 }
 ```
@@ -201,7 +200,7 @@ model.getUser( { sid: 'fdkaldjfgsakls0322yf8' } )
 启动程序后，ModelProxy即返回相关mock数据。
 
 
-### 用例五 (使用ModelProxy拦截请求)
+### 用例五 使用ModelProxy拦截请求
 
 ```js
 var app = require( 'connect' )();
@@ -214,7 +213,7 @@ app.use( '/model', ModelProxy.Interceptor );
 // 此时可直接通过浏览器访问 /model/[interfaceid] 调用相关接口(如果该接口定义中配置了 interceptor = false, 则无法访问)
 ```
 
-### 用例六 (在浏览器端使用ModelProxy)
+### 用例六 在浏览器端使用ModelProxy
 * 第一步 按照用例二配置接口文件
 
 * 第二步 按照用例五 启用拦截功能
@@ -257,6 +256,28 @@ app.use( '/model', ModelProxy.Interceptor );
 </html>
 ```
 
+### 用例七 代理带cookie的请求并且回写cookie (注：请求是否需要带cookie或者回写取决于接口提供者)
+
+* 关键代码(app 由express创建)
+
+```js
+app.get( '/getMycart', function( req, res ) {
+    var cookie = req.headers.cookie;
+    var cart = ModelProxy.create( 'Cart.*' );
+    cart.getMyCart()
+        // 在调用done之前带上cookie
+        .withCookie( cookie )
+        // done 回调函数中最后一个参数总是需要回写的cookie，不需要回写时可以忽略
+        .done( function( data , setCookies ) {
+            // 回写cookie
+            res.setHeader( 'Set-Cookie', setCookies );
+            res.send( data );
+        }, function( err ) {
+            res.send( 500, err );
+        } );
+} );
+
+```
 
 
 # 配置文件详解
@@ -358,7 +379,7 @@ ModelProxy.create( 'Search.*' );
 method为创建model时动态生成，参数 params{Object}, 为请求接口所需要的参数键值对。
 
 * .done( callback, errCallback )
-接口调用完成函数，callback函数的参数与done之前调用的方法请求结果保持一致. callback函数中的 this 指向ModelProxy对象本身，方便做进一步调用。errCallback 即出错回调函数（可能会被调用多次）。
+接口调用完成函数，callback函数的参数与done之前调用的方法请求结果保持一致.最后一个参数为请求回写的cookie。callback函数中的 this 指向ModelProxy对象本身，方便做进一步调用。errCallback 即出错回调函数（可能会被调用多次）。
 
 * .error( errCallback )
 指定全局调用出错处理函数， errCallback 的参数为Error对象。

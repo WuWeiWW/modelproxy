@@ -27,6 +27,23 @@ app.get( '/getCombinedData', function( req, res ) {
         } );
 } );
 
+// 带cookie的代理请求与回写
+app.get( '/getMycart', function( req, res ) {
+    var cookie = req.headers.cookie;
+    console.log( 'request cookie:\n', cookie );
+    var cart = ModelProxy.create( 'Cart.*' );
+    cart.getMyCart()
+        .withCookie( cookie )
+        .done( function( data , setCookies ) {
+            console.log( 'response cookie:\n', setCookies );
+            res.setHeader( 'Set-Cookie', setCookies );
+            res.send( data );
+        }, function( err ) {
+            res.send( 500, err );
+        } );
+} );
+
+
 // 配置资源路由
 app.get( '/modelproxy-client.js', function( req, res ) {
 	res.sendfile( './modelproxy-client.js' );
