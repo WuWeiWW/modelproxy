@@ -381,6 +381,9 @@ method为创建model时动态生成，参数 params{Object}, 为请求接口所�
 * .done( callback, errCallback )
 接口调用完成函数，callback函数的参数与done之前调用的方法请求结果保持一致.最后一个参数为请求回写的cookie。callback函数中的 this 指向ModelProxy对象本身，方便做进一步调用。errCallback 即出错回调函数（可能会被调用多次）。
 
+* .withCookie( cookies )
+如果接口需要提供cookie才能返回数据，则调用此方法来设置请求的cookie{String} (如何使用请查看用例七)
+
 * .error( errCallback )
 指定全局调用出错处理函数， errCallback 的参数为Error对象。
 
