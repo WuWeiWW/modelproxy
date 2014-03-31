@@ -11,10 +11,11 @@
 5. 使用接口配置文件，对接口的依赖描述做统一的管理，避免散落在各个代码之中。
 6. 接口配置文件本身是结构化的描述文档，可以使用midway-if(开发中)构件，自动生成文档。也可使用他做相关自动化接口测试，使整个开发过程形成一个闭环。
 
-# 使用说明
+# 使用前必读
 ---
-使用ModelProxy之前，您需要在工程根目录下创建名为interface.json的配置文件。该文件定义了工程项目中所需要使用到的接口集合
-(详细配置说明见后文)。定义之后，您可以在代码中按照需要引入不同的接口，创建与业务相关的Model对象。
+使用ModelProxy之前，您需要在工程根目录下创建名为interface.json的配置文件。该文件定义了工程项目中所有需要使用到的接口集合
+(详细配置说明见后文)。定义之后，您可以在代码中按照需要引入不同的接口，创建与业务相关的Model对象。接口的定义和model其实是多对多的关系。
+也即一个接口可以被多个model使用，一个model可以使用多个接口。具体情况由创建model的方式来决定。下面用例中会从易到难交您如何创建这些model。
 
 # 快速开始
 ---
@@ -24,8 +25,9 @@
 tnpm install midway-modelproxy
 ```
 
-### 用例一 (接口文件配置->引入接口配置文件->使用model)
-* 第一步 配置接口文件（接口文件默认放置在项目根目录下，命名为：interface_sample.json）
+### 用例一 (接口文件配置->引入接口配置文件->创建并使用model)
+* 第一步 配置接口文件命名为：interface_sample.json，并将其放在工程根目录下。
+注意：整个项目有且只有一个接口配置文件，其interfaces字段下定义了多个接口。在本例中，仅仅配置了一个主搜接口。
 
 ```json
 {
@@ -44,13 +46,13 @@ tnpm install midway-modelproxy
 }
 ```
 
-* 第二步 在代码中引入ModelProxy模块，并且初始化引入接口配置文件
+* 第二步 在代码中引入ModelProxy模块，并且初始化引入接口配置文件（在实际项目中，引入初始化文件动作应伴随工程项目启动时完成，有且只有一次）
 
 ```js
 // 引入模块
 var ModelProxy = require( 'modelproxy' ); 
 
-// 初始化引入接口配置文件
+// 初始化引入接口配置文件  （注意：初始化工作有且只有一次）
 ModelProxy.init( './interface_sample.json' );
 ```
 
@@ -104,10 +106,6 @@ searchModel.searchItems( { keyword: 'iphone6' } )
 * 代码
 
 ```js
-var ModelProxy = require( 'modelproxy' ); 
-
-ModelProxy.init( './interface_sample.json' );
-
 // 更多创建方式，请参考后文API
 var model = new ModelProxy( 'Search.*' );
 
@@ -160,8 +158,6 @@ model.suggest( { q: '女' } )
 * 代码
 
 ``` js
-var ModelProxy = require( 'modelproxy' ); 
-
 var model = new ModelProxy( {
     getUser: 'Session.getUser',
     getMyOrderList: 'Order.getOrder'
@@ -169,7 +165,7 @@ var model = new ModelProxy( {
 // 先获得用户id，然后再根据id号获得订单列表
 model.getUser( { sid: 'fdkaldjfgsakls0322yf8' } )
     .done( function( data ) {
-        var uid = data.uid
+        var uid = data.uid;
         this.getMyOrderList( { id: uid } )
             .done( function( data ) {
                 console.log( data );
@@ -215,7 +211,7 @@ ModelProxy.init( './interface_sample.json' );
 // 指定需要拦截的路径
 app.use( '/model', ModelProxy.Interceptor );
 
-// 此时可直接通过浏览器访问 /model/[interfaceid] 调用相关接口
+// 此时可直接通过浏览器访问 /model/[interfaceid] 调用相关接口(如果该接口定义中配置了 interceptor = false, 则无法访问)
 ``` 
 
 # 配置文件详解
@@ -223,38 +219,37 @@ app.use( '/model', ModelProxy.Interceptor );
 
 ``` js
 {
-    "title": "pad淘宝项目数据接口集合定义",       // [必填] 接口文档标题
-    "version": "1.0.0",                      // [必填] 版本号
-    "engine": "mockjs",                      // [选填] mock 引擎，目前只支持mockjs。不需要mock数据时可以不配置
-    "rulebase": "./interfaceRules/",         // [选填] mock规则文件夹路径。不需要mock数据时可以不配置
-    "status": "online",                      // [必填] 全局代理状态，取值只能是 interface.urls中出现过的键值或者mock
+    "title": "pad淘宝项目数据接口集合定义",       // [必填][string] 接口文档标题
+    "version": "1.0.0",                      // [必填][string] 版本号
+    "engine": "mockjs",                      // [选填][string] mock 引擎，目前只支持mockjs。不需要mock数据时可以不配置
+    "rulebase": "./interfaceRules/",         // [选填][string] mock规则文件夹路径。不需要mock数据时可以不配置
+    "status": "online",                      // [必填][string] 全局代理状态，取值只能是 interface.urls中出现过的键值或者mock
     "interfaces": [ {
-        "name": "获取购物车信息",               // [选填] 接口名称 生成文档有用
-        "desc": "接口负责人: 善繁",             // [选填] 接口描述 生成文档有用
-        "version": "0.0.1",                  // [选填] 接口版本号 发送请求时会带上版本号字段
-        "id": "cart.getCart",                // [必填，全局唯一] 接口ID，必须由英文单词+点号组成
-        "urls": {                            // url集合 [如果ruleFile不存在, 则必须有一个地址存在]
+        "name": "获取购物车信息",               // [选填][string] 接口名称 生成文档有用
+        "desc": "接口负责人: 善繁",             // [选填][string] 接口描述 生成文档有用
+        "version": "0.0.1",                  // [选填][string] 接口版本号 发送请求时会带上版本号字段
+        "id": "cart.getCart",                // [必填][string] 接口ID，必须由英文单词+点号组成
+        "urls": {                            // [如果ruleFile不存在, 则必须有一个地址存在][object] 可供切换的url集合
           "online": "http://url1",           // 线上地址
           "prep": "http://url2",             // 预发地址
           "daily": "http://url3",            // 日常地址
         },
-        "ruleFile": "cart.getCart.rule.json",// [选填] 对应的数据规则文件，当Proxy Mock状态开启时回返回mock数据，
+        "ruleFile": "cart.getCart.rule.json",// [选填][string] 对应的数据规则文件，当Proxy Mock状态开启时回返回mock数据，
                                              // 不配置时默认为id + ".rule.json"。
-        "isRuleStatic": true,                // [选填] 数据规则文件是否为静态，即在开启mock状态时，程序会将ruleFile
+        "isRuleStatic": true,                // [选填][boolean] 数据规则文件是否为静态，即在开启mock状态时，程序会将ruleFile
                                              // 按照静态文件读取, 而非解析该规则文件生成数据，默认为false
-        "status": "online",                  // [选填] 当前代理状态，可以是urls中的某个键值(online, prep, daily)或者mock
+        "status": "online",                  // [选填][string] 当前代理状态，可以是urls中的某个键值(online, prep, daily)或者mock
                                              // 如果不填，则代理状态依照全局设置的代理状态
-        "method": "post",                    // [选填] 请求方式，取值post|get 默认get
-        "dataType": "json",                  // [选填] 返回的数据格式, 取值 json|text, 默认为json
-        "isCookieNeeded": true,              // [选填] 是否需要传递cookie 默认false
-        "encoding": "utf8"                   // [选填] 代理的数据源编码类型。取值可以是常用编码类型'utf8', 'gbk', 
+        "method": "post",                    // [选填][string] 请求方式，取值post|get 默认get
+        "dataType": "json",                  // [选填][string] 返回的数据格式, 取值 json|text, 默认为json
+        "isCookieNeeded": true,              // [选填][boolean] 是否需要传递cookie 默认false
+        "encoding": "utf8"                   // [选填][string] 代理的数据源编码类型。取值可以是常用编码类型'utf8', 'gbk', 
                                              // 'gb2312' 或者 'raw' 如果设置为raw则直接返回2进制buffer，默认为utf8。
                                              //  注意，不论数据源原来为何种编码，代理之后皆以utf8编码输出。
-        "signed": false,                     // [选填] 是否需要签名，默认false
-        "timeout": 5000,                     // [选填] 延时设置，默认10000
-        "intercepted": true                  // [选填] 是否拦截请求，默认为true
+        "timeout": 5000,                     // [选填][number] 延时设置，默认10000
+        "intercepted": true                  // [选填][boolean] 是否拦截请求，默认为true
         // format         // 未完待续
-        // filter...      // 未完待续
+        // filter...      // 未完待续 
     }, {
         ...
     } ],
