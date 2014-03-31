@@ -83,9 +83,9 @@ searchModel.searchItems( { keyword: 'iphone6' } )
 {   // 头部配置省略...
     "interfaces": [ {
         "name": "主搜索搜索接口",
-        "id": "Search.getItems",
+        "id": "Search.list",
         "urls": {
-            "online": "http://s.m.taobao.com/client/search.do"
+            "online": "http://s.m.taobao.com/search.do"
         }
     }, {
         "name": "热词推荐接口",
@@ -110,7 +110,7 @@ searchModel.searchItems( { keyword: 'iphone6' } )
 var model = new ModelProxy( 'Search.*' );
 
 // 调用自动生成的不同方法
-model.getItems( { keyword: 'iphone6' } )
+model.list( { keyword: 'iphone6' } )
     .done( function( data ) {
         console.log( data );
     } );
@@ -125,7 +125,7 @@ model.suggest( { q: '女' } )
 
 // 合并请求
 model.suggest( { q: '女' } )
-    .getItems( { keyword: 'iphone6' } )
+    .list( { keyword: 'iphone6' } )
     .getNav( { key: '流行服装' } )
     .done( function( data1, data2, data3 ) {
         // 参数顺序与方法调用顺序一致
@@ -212,7 +212,52 @@ ModelProxy.init( './interface_sample.json' );
 app.use( '/model', ModelProxy.Interceptor );
 
 // 此时可直接通过浏览器访问 /model/[interfaceid] 调用相关接口(如果该接口定义中配置了 interceptor = false, 则无法访问)
-``` 
+```
+
+### 用例六 (在浏览器端使用ModelProxy)
+* 第一步 按照用例二配置接口文件
+
+* 第二步 按照用例五 启用拦截功能
+
+* 第三步 在浏览器端使用ModelProxy based on KISSY
+
+```html
+<!doctype html>
+<html>
+<head>
+<script src="https://s.tbcdn.cn/g/kissy/k/1.4.1/seed.js"></script>
+<!-- 引入modelproxy模块，为方便起见直接引入，而非采用KISSY标准包配置引入。但该模块本身是由KISSY封装的标准模块-->
+<script src="modelproxy-client.js" ></script>
+</head>
+<body>
+<script type="text/javascript">
+    KISSY.use( "modelproxy", function( S, ModelProxy ) {
+        // !配置基础路径，该路径与第二部中配置的拦截路径一致!
+        // 且全局配置有且只有一次！
+        ModelProxy.configBase( '/model/' );
+
+        // 创建model
+        var searchModel = ModelProxy.create( 'Search.*' );
+        searchModel
+            .list( { q: 'ihpone6' } )
+            .list( { q: '冲锋衣' } )
+            .suggest( { q: 'i' } )
+            .getNav( { q: '滑板' } )
+            .done( function( data1, data2, data3, data4 ) {
+                console.log( {
+                    "list_ihpone6": data1,
+                    "list_冲锋衣": data2,
+                    "suggest_i": data3,
+                    "getNav_滑板": data4
+                } );
+            } );
+    } );
+</script>
+</body>
+</html>
+```
+
+
 
 # 配置文件详解
 ---
