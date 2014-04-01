@@ -305,7 +305,8 @@ app.get( '/getMycart', function( req, res ) {
         "isRuleStatic": true,                // [选填][boolean] 数据规则文件是否为静态，即在开启mock状态时，程序会将ruleFile
                                              // 按照静态文件读取, 而非解析该规则文件生成数据，默认为false
         "status": "online",                  // [选填][string] 当前代理状态，可以是urls中的某个键值(online, prep, daily)或者mock
-                                             // 如果不填，则代理状态依照全局设置的代理状态
+                                             // 或mockerr。如果不填，则代理状态依照全局设置的代理状态；如果设置为mock，则返回ruleFile中定义
+                                             // response 内容；如果设置为mockerr，则返回ruleFile中定义的responseError内容。
         "method": "post",                    // [选填][string] 请求方式，取值post|get 默认get
         "dataType": "json",                  // [选填][string] 返回的数据格式, 取值 json|text, 默认为json
         "isCookieNeeded": true,              // [选填][boolean] 是否需要传递cookie 默认false

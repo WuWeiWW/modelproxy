@@ -16,8 +16,7 @@
         "id": "Search.list",
         "urls": {
             "online": "http://api.s.m.taobao.com/search.json"
-        },
-        "status": "mock"
+        }
     }, {
         "name": "热词推荐接口",
         "id": "Search.suggest",
