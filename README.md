@@ -13,7 +13,7 @@
 7. 支持浏览器端共享Model，浏览器端可以使用它做前端数据渲染。整个代理过程对浏览器透明。
 
 ### ModelProxy工作原理图及相关开发过程图览
-![](http://gtms04.alicdn.com/tps/i4/T1IoEtFztXXXX5oCQ3-1336-986.png)
+![](http://gtms03.alicdn.com/tps/i3/T1d.gnFrtcXXcL04bU-1356-1014.png)
 
 # 使用前必读
 ---
