@@ -10,6 +10,10 @@
 4. 支持不同的mock引擎（目前一期只支持mockjs），提供mock数据非常方便。
 5. 使用接口配置文件，对接口的依赖描述做统一的管理，避免散落在各个代码之中。
 6. 接口配置文件本身是结构化的描述文档，可以使用midway-if(开发中)构件，自动生成文档。也可使用他做相关自动化接口测试，使整个开发过程形成一个闭环。
+7. 支持浏览器端共享Model，浏览器端可以使用它做前端数据渲染。整个代理过程对浏览器透明。
+
+### ModelProxy工作原理图及相关开发过程图览
+![](http://gtms04.alicdn.com/tps/i4/T1IoEtFztXXXX5oCQ3-1336-986.png)
 
 # 使用前必读
 ---
@@ -19,11 +23,6 @@
 
 # 快速开始
 ---
-### 安装
-
-```sh
-tnpm install midway-modelproxy
-```
 
 ### 用例一 接口文件配置->引入接口配置文件->创建并使用model
 * 第一步 配置接口文件命名为：interface_sample.json，并将其放在工程根目录下。
@@ -210,7 +209,7 @@ ModelProxy.init( './interface_sample.json' );
 // 指定需要拦截的路径
 app.use( '/model', ModelProxy.Interceptor );
 
-// 此时可直接通过浏览器访问 /model/[interfaceid] 调用相关接口(如果该接口定义中配置了 interceptor = false, 则无法访问)
+// 此时可直接通过浏览器访问 /model/[interfaceid] 调用相关接口(如果该接口定义中配置了 intercepted = false, 则无法访问)
 ```
 
 ### 用例六 在浏览器端使用ModelProxy
@@ -218,17 +217,14 @@ app.use( '/model', ModelProxy.Interceptor );
 
 * 第二步 按照用例五 启用拦截功能
 
-* 第三步 在浏览器端使用ModelProxy based on KISSY
+* 第三步 在浏览器端使用ModelProxy
 
 ```html
-<!doctype html>
-<html>
-<head>
-<script src="https://s.tbcdn.cn/g/kissy/k/1.4.1/seed.js"></script>
 <!-- 引入modelproxy模块，为方便起见直接引入，而非采用KISSY标准包配置引入。但该模块本身是由KISSY封装的标准模块-->
 <script src="modelproxy-client.js" ></script>
-</head>
-<body>
+```
+
+```html
 <script type="text/javascript">
     KISSY.use( "modelproxy", function( S, ModelProxy ) {
         // !配置基础路径，该路径与第二部中配置的拦截路径一致!
@@ -252,8 +248,6 @@ app.use( '/model', ModelProxy.Interceptor );
             } );
     } );
 </script>
-</body>
-</html>
 ```
 
 ### 用例七 代理带cookie的请求并且回写cookie (注：请求是否需要带cookie或者回写取决于接口提供者)
@@ -401,11 +395,12 @@ ruleBase字段所指定的文件夹中。 (建议该文件夹与interface配置�
 ```js
 {
     "request": { // 请求参数列表
-        "参数名1": "规则一",      // 具体规则取决于采用何种引擎
+        "参数名1": "规则一",       // 具体规则取决于采用何种引擎
         "参数名2": "规则二",
         ...
     },
-    "response": 响应内容规则      // 响应内容规则取决于采用何种引擎
+    "response": 响应内容规则,      // 响应内容规则取决于采用何种引擎
+    "responseError": 响应失败规则  // 响应内容规则取决于采用何种引擎
 }
 
 ```
