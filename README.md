@@ -181,6 +181,7 @@ model.getUser( { sid: 'fdkaldjfgsakls0322yf8' } )
     "version": "1.0.0",
     "engine": "mockjs",                <-- 指定mock引擎
     "rulebase": "./interfaceRules/",   <-- 指定存放相关mock规则文件的目录
+    "status": "online",
     "interfaces": [ {
         "name": "主搜索接口",
         "id": "Search.getItems",
@@ -190,7 +191,7 @@ model.getUser( { sid: 'fdkaldjfgsakls0322yf8' } )
             "prep": "http://s.m.taobao.com/client/search.do",
             "daily": "http://daily.taobao.net/client/search.do"
         },
-        status: 'mock'                     <-- 启用mock状态
+        status: 'mock'                     <-- 启用mock状态，覆盖全局status
     } ]
 }
 ```
