@@ -2,7 +2,7 @@
 
 * 第一步 
 
-node baseUsageDemo.js
+node basicUsageDemo.js
 
 
 * 第二步
