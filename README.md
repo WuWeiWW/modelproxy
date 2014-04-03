@@ -282,7 +282,8 @@ app.get( '/getMycart', function( req, res ) {
     "title": "pad淘宝项目数据接口集合定义",       // [必填][string] 接口文档标题
     "version": "1.0.0",                      // [必填][string] 版本号
     "engine": "mockjs",                      // [选填][string] mock 引擎，目前只支持mockjs。不需要mock数据时可以不配置
-    "rulebase": "./interfaceRules/",         // [选填][string] mock规则文件夹路径。不需要mock数据时可以不配置
+    "rulebase": "./interfaceRules/",         // [选填][string] mock规则文件夹路径。不需要mock数据时可以不配置。
+                                             //  默认会设置为与本配置文件同级别的文件夹下名位 interfaceRules的文件夹
     "status": "online",                      // [必填][string] 全局代理状态，取值只能是 interface.urls中出现过的键值或者mock
     "interfaces": [ {
         "name": "获取购物车信息",               // [选填][string] 接口名称 生成文档有用
