@@ -15,10 +15,22 @@ describe( 'InterfaceManager', function() {
     interfaceManager = new InterfaceManager( './interface_test.json' ); 
     assert.equal( interfaceManager instanceof InterfaceManager, true );
   } );
+  
+  it( 'can not be initalized when no status is specified', function() {
+    assert.throws( function() {
+      new InterfaceManager({});
+    }, function( err ) {
+      return err.toString()
+          .indexOf( 'There is no status specified' ) !== -1;
+    } );
+  } )
+
 } );
 
 describe( 'interfaceManager', function() {
-  var ifmgr = new InterfaceManager();
+  var ifmgr = new InterfaceManager( {
+    status: 'online'
+  } );
 
   describe( '#_addProfile()', function() {
     it( 'can not be added without id', function() {
