@@ -10,6 +10,7 @@
         "urls": {
             "online": "http://cart.taobao.com/json/asyncGetMyCart.do"
         },
+        "isCookieNeeded": true,
         "encoding": "gbk"
     }, {
         "name": "主搜索接口",
