@@ -11,6 +11,7 @@
             "online": "http://cart.taobao.com/json/asyncGetMyCart.do"
         },
         "isCookieNeeded": true,
+        "timeout": 100,
         "encoding": "gbk"
     }, {
         "name": "主搜索接口",

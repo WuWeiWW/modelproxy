@@ -12,7 +12,7 @@ describe( 'InterfaceManager', function() {
           .indexOf( 'Fail to load interface profiles.Error' ) !== -1;
     } );
 
-    interfaceManager = new InterfaceManager( './interface_test.json' ); 
+    interfaceManager = new InterfaceManager( '../tests/interface_test.json' ); 
     assert.equal( interfaceManager instanceof InterfaceManager, true );
   } );
   
@@ -23,7 +23,7 @@ describe( 'InterfaceManager', function() {
       return err.toString()
           .indexOf( 'There is no status specified' ) !== -1;
     } );
-  } )
+  } );
 
 } );
 

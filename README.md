@@ -228,7 +228,7 @@ app.use( '/model', ModelProxy.Interceptor );
 ```html
 <script type="text/javascript">
     KISSY.use( "modelproxy", function( S, ModelProxy ) {
-        // !配置基础路径，该路径与第二部中配置的拦截路径一致!
+        // !配置基础路径，该路径与第二步中配置的拦截路径一致!
         // 且全局配置有且只有一次！
         ModelProxy.configBase( '/model/' );
 

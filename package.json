@@ -15,7 +15,9 @@
     "bufferhelper": "*"
   },
   "devDependencies": {
-    "mocha": "1.17.1"
+    "mocha": "1.17.1",
+    "istanbul": "0.2.7",
+    "mocha-istanblu": "0.2.0"
   },
   "repository": {
     "type": "git",
