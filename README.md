@@ -407,6 +407,11 @@ ruleBase字段所指定的文件夹中。 (建议该文件夹与interface配置�
 
 ```
 
+# Coverage
+
+`81%` coverage 
+`269` SLOC
+
 ## [附] 中途岛整体架构图及modelproxy所处位置
 ![](http://work.taobao.net/attachments/download/2929/Midway.png)
 
