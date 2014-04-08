@@ -13,7 +13,7 @@
 7. 支持浏览器端共享Model，浏览器端可以使用它做前端数据渲染。整个代理过程对浏览器透明。
 
 ### ModelProxy工作原理图及相关开发过程图览
-![](http://gtms03.alicdn.com/tps/i3/T1d.gnFrtcXXcL04bU-1356-1014.png)
+![](http://gtms01.alicdn.com/tps/i1/T1cMg0FBxbXXbpGBHw-892-666.png)
 
 # 使用前必读
 ---
@@ -408,7 +408,7 @@ ruleBase字段所指定的文件夹中。 (建议该文件夹与interface配置�
 
 ```
 
-## Test Coverage
+## [Test Coverage]
 ---
 
  **Overview: `81%` coverage `269` SLOC** 
