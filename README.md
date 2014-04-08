@@ -274,6 +274,7 @@ app.get( '/getMycart', function( req, res ) {
 
 ```
 
+### 完整实例请查看 [demo](demo/)
 
 # 配置文件详解
 ---
@@ -410,17 +411,11 @@ ruleBase字段所指定的文件夹中。 (建议该文件夹与interface配置�
 ## Test Coverage
 ---
 
-* overview
-`81%` coverage `269` SLOC
+ **Overview: `81%` coverage `269` SLOC** 
 
-* lib/modelproxy.js
-`98%` coverage `57` SLOC
-
-* lib/interfacemanager.js
-`98%` coverage `76` SLOC
-
-* lib/proxyfactory.js
-`63%` coverage `136` SLOC
+[modelproxy.js](lib/modelproxy.js)            : `98%` coverage `57` SLOC
+[interfacemanager.js](lib/interfacemanager.js): `98%` coverage `76` SLOC
+[proxyfactory](lib/proxyfactory.js)           : `63%` coverage `136` SLOC
 
 
 ## [附] 中途岛整体架构图及modelproxy所处位置
