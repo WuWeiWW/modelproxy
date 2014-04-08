@@ -149,7 +149,7 @@ describe( 'interfaceManager', function() {
 
     it( 'should throw error when the rule file does not exist', function() {
       assert.throws( function() {
-        interfaceManager.getRule( 'Cart.getMyCart' );
+        interfaceManager.getRule( 'Test.post' );
       }, function( err ) {
         return err.toString()
           .indexOf( 'The rule file is not existed.' ) !== -1;         
@@ -192,7 +192,7 @@ describe( 'interfaceManager', function() {
     assert.notEqual( clientInterfaces, null );
     var cnt = 0;
     for ( var i in clientInterfaces ) cnt++;
-    assert.equal( cnt, 4 );
+    assert.equal( cnt, 7 );
   } );
 
 } );

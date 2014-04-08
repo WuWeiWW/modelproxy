@@ -5,8 +5,14 @@
 <script src="modelproxy-client.js" ></script>
 </head>
 <body>
+<div>
+    id: <input id='id'/><br>
+    content: <textarea id='content'></textarea>
+    <button id='postBtn'>click me to post request!</button>
+</div>
+
 <script type="text/javascript">
-    KISSY.use( "modelproxy", function( S, ModelProxy ) {
+    KISSY.use( "modelproxy, node", function( S, ModelProxy, Node ) {
         ModelProxy.configBase( '/model/' );
         var searchModel = ModelProxy.create( 'Search.*' );
         searchModel
@@ -23,6 +29,21 @@
                     "getNav_滑板": data4
                 } );
             } );
+
+        // For post demo
+        var $btn = Node.all( '#postBtn' );
+        $btn.on( 'click', function( e ) {
+            var params = { 
+                id: Node.one('#id').val(),
+                content: Node.one('#content').val(),
+                longJSON: '{"a":"b","c":"d"}'
+            };
+            var postModel = ModelProxy.create( 'Test.post' );
+            postModel.post( params )
+                .done( function( result ) {
+                    alert( result );
+                } );
+        } );
     } );
     
     KISSY.use( "io", function( S, IO ) {

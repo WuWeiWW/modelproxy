@@ -54,7 +54,14 @@ describe( 'ProxyFactory', function() {
         headers: {
           cookie: ''
         },
-        url: '/Search.suggest?q=a'
+        url: '/Search.suggest?q=a',
+        on: function( eventName, callback ) {
+          if ( eventName === 'data' ) {
+            callback( 'mock chunk' );
+          } else if ( eventName === 'end' ) {
+            callback();
+          }
+        }
       };
       var res = {
         headers: {
@@ -66,6 +73,13 @@ describe( 'ProxyFactory', function() {
         },
         setHeader: function( key, value ) {
           this.headers[key] = value;
+        },
+        on: function( eventName, callback ) {
+          if ( eventName === 'data' ) {
+            callback( 'mock chunk' );
+          } else if ( eventName === 'end' ) {
+            callback();
+          }
         }
       };
       ProxyFactory.Interceptor( req, res );
@@ -113,6 +127,29 @@ describe( 'ProxyFactory', function() {
       };
       ProxyFactory.Interceptor( req, res );
     } );
+
+    it( 'should response client interfaces', function( done ) {
+      var req = {
+        headers: {
+          cookie: ''
+        },
+        url: '/$interfaces',
+        on: function( eventName, callback ) {
+          if ( eventName === 'data' ) {
+            callback( 'mock chunk' );
+          } else if ( eventName === 'end' ) {
+            callback();
+          }
+        }
+      };
+      var res = {
+        end:  function( data ) {
+          assert.notEqual( data.length, 0 );
+          done();
+        }
+      };
+      ProxyFactory.Interceptor( req, res );
+    } )
 
   } );
 
@@ -197,8 +234,10 @@ describe( 'Proxy', function() {
     it( 'should return the joined string with & if the params is a key-value object', function() {
       assert.strictEqual( p._queryStringify( {a:'b', c:'d'} ), 'a=b&c=d' );
       assert.strictEqual( p._queryStringify( {} ), '' );
-      assert.strictEqual( p._queryStringify( {a:'b', c:{d:'f'}} ), 'a=b&c={"d":"f"}' );
-      assert.strictEqual( p._queryStringify( {a:'b', c:['d','e']} ), 'a=b&c=["d","e"]' );
+      assert.strictEqual( p._queryStringify( {a:'b', c:"{'d':'f'}"} )
+        , "a=b&c=" + encodeURIComponent("{'d':'f'}") );
+      assert.strictEqual( p._queryStringify( {a:'b', c:"['d','e']"} )
+        , "a=b&c=" + encodeURIComponent("['d','e']") );
     } );
   } );
   
@@ -266,7 +305,14 @@ describe( 'Proxy', function() {
         headers: {
           cookie: ''
         },
-        url: 'Search.suggest?q=a'
+        url: 'Search.suggest?q=a',
+        on: function( eventName, callback ) {
+          if ( eventName === 'data' ) {
+            callback( 'mock chunk' );
+          } else if ( eventName === 'end' ) {
+            callback();
+          }
+        }
       };
       var res = {
         headers: {
@@ -432,7 +478,6 @@ describe( 'Proxy', function() {
     } );
   } );
   
-
 } );
 
 

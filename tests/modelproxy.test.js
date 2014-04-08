@@ -34,7 +34,7 @@ describe( 'ModelProxy', function() {
       assert( typeof m.suggest === 'function' );
       assert( typeof m.getNav === 'function' );
 
-      m = ModelProxy.create( [ 'Search.getNav', 'd.getNav' ] );
+      m = ModelProxy.create( [ 'Search.getNav', 'D.getNav' ] );
       assert( typeof m.Search_getNav === 'function' );
       assert( typeof m.getNav === 'function' );
 
@@ -110,11 +110,41 @@ describe( 'modelProxy', function() {
 
     it( 'should output the error when no errCallback is specified', function() {
       var m = ModelProxy.create( 'Cart.*' );
-        m.getMyCart( {q:'a',key: 'b'} )
-         .withCookie( 'a=b' )
-         .done( function( data ) {
+      m.getMyCart( {q:'a',key: 'b'} )
+       .withCookie( 'a=b' )
+       .done( function( data ) {
 
-         } );
+       } );
+    } );
+
+    it( 'should write the data into request body when the method type is POST', function( done ) {
+      var model = ModelProxy.create( 'Test.post' );
+      model.post( {
+          a: 'abc',
+          b: 'bcd',
+          c: '{"a":"b"}'
+      } ).done( function( data ) {
+          assert.strictEqual( data, 'this is the msg from mockserver!' );
+          done();
+      } );
+    } );
+
+    it( 'should inspire errCallback due to the response is timeout', function( done ) {
+      var model = ModelProxy.create( {
+        'getData': 'Test.timeoutUrl'
+      } );
+
+      model.getData()
+      .done( function( data ) {
+      }, function( err ) {
+        console.log( err + 'timeout, timeout timeout timeout' );
+        done();
+      } )
+      .error( function( err ) {
+        console.log( err );
+        done();
+      } );
+
     } );
 
   } );

@@ -11,6 +11,15 @@ app.get( '/index', function( req, res ) {
     res.sendfile( 'modelproxy-client.html' );
 } );
 
+var model = ModelProxy.create( 'Test.post' );
+model.post( {
+    a: 'abc',
+    b: 'bcd',
+    c: '{"a":"b"}'
+} ).done( function( data ) {
+    console.log( data );
+} );
+
 app.get( '/getCombinedData', function( req, res ) {
 	var searchModel = ModelProxy.create( 'Search.*' );
     searchModel.list( { q: 'ihpone6' } )

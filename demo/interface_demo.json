@@ -29,6 +29,14 @@
         "urls": {
             "online": "http://s.m.taobao.com/client/search.do"
         }
+    }, {
+        "name": "post测试接口",
+        "id": "Test.post",
+        "urls": {
+            "online": "http://127.0.0.1:3001/post"
+        },
+        "method": "post",
+        "dataType": "text"
     } ],
     "combo": {
         "getMyData": [ "Cart.getCart", "Search.suggest" ]

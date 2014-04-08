@@ -43,6 +43,23 @@
         "status": "online",
         "isRuleStatic": true,
         "intercepted": false
+    }, {
+        "name": "post测试接口",
+        "id": "Test.post",
+        "urls": {
+            "online": "http://127.0.0.1:3001/post"
+        },
+        "method": "post",
+        "dataType": "text"
+    },{
+        "name": "timeout测试接口",
+        "id": "Test.timeoutUrl",
+        "urls": {
+            "online": "http://127.0.0.1:3001/timeoutUrl"
+        },
+        "method": "get",
+        "dataType": "text",
+        "timeout": 1000
     }  ],
     "combo": {
         "getMyData": [ "Cart.getCart", "Search.suggest" ]

@@ -1,7 +1,7 @@
 {
   "name": "midway-modelproxy",
   "description": "midway modelproxy module",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "author": "shanfan <yingzhu.zyz@alibaba-inc.com>",
   "contributors": [
     {
@@ -16,7 +16,8 @@
   },
   "devDependencies": {
     "mocha": "1.17.1",
-    "jscoverage": "0.3.8"
+    "jscoverage": "0.3.8",
+    "express": "3.4.8"
   },
   "repository": {
     "type": "git",

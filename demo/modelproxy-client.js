@@ -29,7 +29,7 @@ KISSY.add( 'modelproxy', function ( S, IO ) {
             throw new Error( 'No such interface id defined: '
                  + id + ', please check your interface configuration file' );
         }
-        return this._interfaces[ id ] = new this( options );
+        return this.objects[ id ] = new this( options );
     },
 
     Proxy.configBase = function( base ) {
@@ -98,10 +98,8 @@ KISSY.add( 'modelproxy', function ( S, IO ) {
         for ( var method in profile ) {
             this[ method ] = ( function( methodName, interfaceId ) {
                 var proxy = Proxy.create( interfaceId );
-                return function( params, cookies, signed ) {
+                return function( params ) {
                     params = params || {};
-                    params.__cookies__  = cookies;
-
                     if ( !this._queue ) {
                         this._queue = [];
                     }

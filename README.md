@@ -413,11 +413,11 @@ ruleBase字段所指定的文件夹中。 (建议该文件夹与interface配置�
 ## [Test Coverage]
 ---
 
- **Overview: `93%` coverage `265` SLOC** 
+ **Overview: `96%` coverage `272` SLOC** 
 
 [modelproxy.js](lib/modelproxy.js)            : `98%` coverage `57` SLOC
-[interfacemanager.js](lib/interfacemanager.js): `97%` coverage `76` SLOC
-[proxyfactory](lib/proxyfactory.js)           : `90%` coverage `132` SLOC
+[interfacemanager.js](lib/interfacemanager.js): `98%` coverage `76` SLOC
+[proxyfactory](lib/proxyfactory.js)           : `94%` coverage `139` SLOC
 
 
 ## [附] 中途岛整体架构图及modelproxy所处位置
