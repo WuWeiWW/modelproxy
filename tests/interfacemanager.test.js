@@ -1,6 +1,6 @@
 var assert = require( 'assert' );
 
-var InterfaceManager = require( '../lib/interfacemanager' );
+var InterfaceManager = require( '../lib-cov/interfacemanager' );
 var interfaceManager;
 
 describe( 'InterfaceManager', function() {
@@ -25,6 +25,14 @@ describe( 'InterfaceManager', function() {
     } );
   } );
 
+  it( 'should throw error if the interface configuration is not a json ', function() {
+    assert.throws( function() {
+      new InterfaceManager( '../tests/README.md' ); 
+    }, function( err ) {
+      return err.toString()
+          .indexOf( 'syntax error' ) !== -1;
+    } );
+  } );
 } );
 
 describe( 'interfaceManager', function() {
@@ -154,6 +162,15 @@ describe( 'interfaceManager', function() {
       }, function( err ) {
         return err.toString()
           .indexOf( 'Rule file has syntax error' ) !== -1;         
+      } );
+    } );
+
+    it( 'should throw error when the interface id is not found', function() {
+      assert.throws( function() {
+        interfaceManager.getRule( 'Error.id' );
+      }, function( err ) {
+        return err.toString()
+          .indexOf( 'is not found' ) !== -1;         
       } );
     } );
   } );
