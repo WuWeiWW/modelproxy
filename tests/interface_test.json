@@ -34,7 +34,15 @@
         },
         "status": "mock",
         "isRuleStatic": true
-    } ],
+    }, {
+        "name": "重复的导航获取接口",
+        "id": "D.getNav",
+        "urls": {
+            "online": "http://s.m.taobao.com/client/search.do"
+        },
+        "status": "online",
+        "isRuleStatic": true
+    }  ],
     "combo": {
         "getMyData": [ "Cart.getCart", "Search.suggest" ]
     }

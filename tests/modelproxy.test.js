@@ -33,6 +33,11 @@ describe( 'ModelProxy', function() {
       assert( typeof m.list === 'function' );
       assert( typeof m.suggest === 'function' );
       assert( typeof m.getNav === 'function' );
+
+      m = ModelProxy.create( [ 'Search.getNav', 'd.getNav' ] );
+      assert( typeof m.Search_getNav === 'function' );
+      assert( typeof m.getNav === 'function' );
+
     } );
 
     it('should throw exception if the specified interface id does not exist', function() {
@@ -105,7 +110,7 @@ describe( 'modelProxy', function() {
 
     it( 'should output the error when no errCallback is specified', function() {
       var m = ModelProxy.create( 'Cart.*' );
-        m.getMyCart( {q:'a',key,'b'} )
+        m.getMyCart( {q:'a',key: 'b'} )
          .withCookie( 'a=b' )
          .done( function( data ) {
 
