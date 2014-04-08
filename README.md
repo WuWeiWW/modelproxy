@@ -411,19 +411,15 @@ ruleBase字段所指定的文件夹中。 (建议该文件夹与interface配置�
 ---
 
 * overview
-
 `81%` coverage `269` SLOC
 
 * lib/modelproxy.js
-
 `98%` coverage `57` SLOC
 
 * lib/interfacemanager.js
-
 `98%` coverage `76` SLOC
 
 * lib/proxyfactory.js
-
 `63%` coverage `136` SLOC
 
 
