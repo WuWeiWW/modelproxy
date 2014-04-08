@@ -373,7 +373,6 @@ ModelProxy.create( [ 'Cart.getItem', 'Search.getItem', 'Search.suggest', 'Sessio
 ModelProxy.create( 'Search.*' );
 ```
 
-
 ### ModelProxy对象方法
 
 * .method( params )
@@ -414,11 +413,11 @@ ruleBase字段所指定的文件夹中。 (建议该文件夹与interface配置�
 ## [Test Coverage]
 ---
 
- **Overview: `81%` coverage `269` SLOC** 
+ **Overview: `93%` coverage `265` SLOC** 
 
 [modelproxy.js](lib/modelproxy.js)            : `98%` coverage `57` SLOC
-[interfacemanager.js](lib/interfacemanager.js): `98%` coverage `76` SLOC
-[proxyfactory](lib/proxyfactory.js)           : `63%` coverage `136` SLOC
+[interfacemanager.js](lib/interfacemanager.js): `97%` coverage `76` SLOC
+[proxyfactory](lib/proxyfactory.js)           : `90%` coverage `132` SLOC
 
 
 ## [附] 中途岛整体架构图及modelproxy所处位置

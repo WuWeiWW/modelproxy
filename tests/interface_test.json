@@ -41,7 +41,8 @@
             "online": "http://s.m.taobao.com/client/search.do"
         },
         "status": "online",
-        "isRuleStatic": true
+        "isRuleStatic": true,
+        "intercepted": false
     }  ],
     "combo": {
         "getMyData": [ "Cart.getCart", "Search.suggest" ]
