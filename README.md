@@ -5,18 +5,17 @@
 ---
 淘系的技术大背景下，必须依赖Java提供稳定的后端接口服务。在这样环境下，Node Server在实际应用中的一个主要作用即是代理(Proxy)功能。由于淘宝业务复杂，后端接口方式多种多样(MTop, Modulet, HSF...)。然而在使用Node开发web应用时，我们希望有一种统一方式访问这些代理资源的基础框架，为开发者屏蔽接口访问差异，同时提供友好简洁的数据接口使用方式。于是就有了 midway-modelproxy 这个构件。使用midway-modelproxy，可以提供如下好处：
 
-1. 所有接口访问方式统一，不同的开发者对于接口访问代码编写方式统一，含义清晰，降低维护难度。
+1. 不同的开发者对于接口访问代码编写方式统一，含义清晰，降低维护难度。
 2. 框架内部采用工厂+单例模式，实现接口一次配置多次复用。并且开发者可以随意定制组装自己的业务Model(依赖注入)。
 3. 可以非常方便地实现线上，日常，预发环境的切换。
-4. 支持不同的mock引擎（目前一期只支持mockjs），提供mock数据非常方便。
+4. 内置[river-mock](http://gitlab.alibaba-inc.com/river/mock/tree/master)和[mockjs](http://mockjs.com)等mock引擎，提供mock数据非常方便。
 5. 使用接口配置文件，对接口的依赖描述做统一的管理，避免散落在各个代码之中。
 6. 支持浏览器端共享Model，浏览器端可以使用它做前端数据渲染。整个代理过程对浏览器透明。
-7. 接口配置文件本身是结构化的描述文档，可以使用midway-if(开发中)构件，自动生成文档。也可使用他做相关自动化接口测试，使整个开发过程形成一个闭环。
-
+7. 接口配置文件本身是结构化的描述文档，可以使用[river](http://gitlab.alibaba-inc.com/river/spec/tree/master)工具集合，自动生成文档。也可使用它做相关自动化接口测试，使整个开发过程形成一个闭环。
 
 ### ModelProxy工作原理图及相关开发过程图览
 ---
-![](http://gtms01.alicdn.com/tps/i1/T1cMg0FBxbXXbpGBHw-892-666.png)
+![](http://gtms03.alicdn.com/tps/i3/T1kp4XFNNXXXXaE5nO-688-514.png)
 
 # 使用前必读
 ---
@@ -284,7 +283,7 @@ app.get( '/getMycart', function( req, res ) {
 {
     "title": "pad淘宝项目数据接口集合定义",       // [必填][string] 接口文档标题
     "version": "1.0.0",                      // [必填][string] 版本号
-    "engine": "mockjs",                      // [选填][string] mock 引擎，目前只支持mockjs。不需要mock数据时可以不配置
+    "engine": "river-mock",                  // [选填][string] mock 引擎，取值可以是river-mock 和mockjs。不需要mock数据时可以不配置
     "rulebase": "./interfaceRules/",         // [选填][string] mock规则文件夹路径。不需要mock数据时可以不配置。
                                              //  默认会设置为与本配置文件同级别的文件夹下名位 interfaceRules的文件夹
     "status": "online",                      // [必填][string] 全局代理状态，取值只能是 interface.urls中出现过的键值或者mock
@@ -415,13 +414,10 @@ ruleBase字段所指定的文件夹中。 (建议该文件夹与interface配置�
 
 [modelproxy.js](lib/modelproxy.js)            : `98%` coverage `57` SLOC
 [interfacemanager.js](lib/interfacemanager.js): `98%` coverage `76` SLOC
-[proxyfactory](lib/proxyfactory.js)           : `94%` coverage `139` SLOC
+[proxyfactory](lib/proxyfactory.js)           : `93%` coverage `139` SLOC
 
 
 ## [附] 中途岛整体架构图及modelproxy所处位置
 ![](http://work.taobao.net/attachments/download/2929/Midway.png)
-
-
-
 
 
