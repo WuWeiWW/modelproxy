@@ -1,4 +1,4 @@
-# midway-modelproxy
+# Midway-ModelProxy 轻量级的接口配置建模框架
 ===
 
 # Why?
