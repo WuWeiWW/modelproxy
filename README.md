@@ -223,7 +223,6 @@ model.getUser( { sid: 'fdkaldjfgsakls0322yf8' } )
 
 * 第二步 添加接口对应的规则文件到ruleBase(./interfaceRules/)指定的文件夹。mock数据规则请参考[river-mock](http://gitlab.alibaba-inc.com/river/mock/tree/master)和[mockjs](http://mockjs.com)。启动程序后，ModelProxy即返回相关mock数据。
 
-
 ### 用例五 使用ModelProxy拦截请求
 
 ```js
@@ -447,5 +446,3 @@ ruleBase字段所指定的文件夹中。 (建议该文件夹与interface配置�
 
 ## [附三] 中途岛整体架构图及modelproxy所处位置
 ![](http://work.taobao.net/attachments/download/2929/Midway.png)
-
-
