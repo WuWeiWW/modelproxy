@@ -6,7 +6,9 @@ KISSY.add( 'modelproxy', function ( S, IO ) {
         request: function( params, callback, errCallback ) {
             IO( {
                 url: this._opt.bypass
-                        ? this._opt.url
+                        ? this._opt.url 
+                            + ( this._opt.url.indexOf( '?' ) === -1 ? '?' : '&' )
+                            + 'version=' + this._opt.version
                         : Proxy.base + '/' + this._opt.id,
                 data: params,
                 type: this._opt.method,
