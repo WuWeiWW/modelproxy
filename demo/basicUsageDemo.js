@@ -33,6 +33,8 @@ app.get( '/getCombinedData', function( req, res ) {
             	"suggest_i": data3,
             	"getNav_滑板": data4
             } );
+        } ).error( function( err ) {
+            res.send( 500, err );
         } );
 } );
 

@@ -3,28 +3,28 @@
 
 ## 目录
  - [Why?]()
-   - [工作原理图](#) 
- - [使用前必读](#)
- - [快速开始](#)
-   - [用例一 接口文件配置->引入接口配置文件->创建并使用model](#)
-   - [用例二 model多接口配置及合并请求](#)
-   - [用例三 Model混合配置及依赖调用](#)
-   - [用例四 配置mock代理](#)
-   - [用例五 使用ModelProxy拦截请求](#)
-   - [用例六 在浏览器端使用ModelProxy](#)
-   - [用例七 代理带cookie的请求并且回写cookie](#)
+   - [工作原理图]() 
+ - [使用前必读]()
+ - [快速开始]()
+   - [用例一 接口文件配置->引入接口配置文件->创建并使用model]()
+   - [用例二 model多接口配置及合并请求]()
+   - [用例三 Model混合配置及依赖调用]()
+   - [用例四 配置mock代理]()
+   - [用例五 使用ModelProxy拦截请求]()
+   - [用例六 在浏览器端使用ModelProxy]()
+   - [用例七 代理带cookie的请求并且回写cookie]()
  - [完整实例](demo/)
- - [配置文件详解](#)
- - [API](#)
-   - [ModelProxy对象创建方式](#)
-   - [创建ModelProxy对象时指定的profile相关形式](#)
-   - [ModelProxy对象方法](#)
- - [如何使用ModelProxy的Mock功能](#)
-   - [rule.json文件](#)
-   - [rule.json文件样式](#)
- - [附一 测试覆盖率](#)
- - [附二 前后端分离思考与实践](#)
- - [附三 中途岛整体架构图及modelproxy所处位置](#)
+ - [配置文件详解]()
+ - [API]()
+   - [ModelProxy对象创建方式]()
+   - [创建ModelProxy对象时指定的profile相关形式]()
+   - [ModelProxy对象方法]()
+ - [如何使用ModelProxy的Mock功能]()
+   - [rule.json文件]()
+   - [rule.json文件样式]()
+ - [附一 测试覆盖率]()
+ - [附二 前后端分离思考与实践]()
+ - [附三 中途岛整体架构图及modelproxy所处位置]()
 
 ## Why?
 ---
@@ -306,8 +306,8 @@ app.get( '/getMycart', function( req, res ) {
 {
     "title": "pad淘宝项目数据接口集合定义",       // [必填][string] 接口文档标题
     "version": "1.0.0",                      // [必填][string] 版本号
-    "engine": "river-mock",                  // [选填][string] mock 引擎，取值可以是river-mock 和mockjs。不需要mock数据时可以不配置
-    "rulebase": "./interfaceRules/",         // [选填][string] mock规则文件夹路径。不需要mock数据时可以不配置。
+    "engine": "river-mock",                  // [选填][string] mock引擎，取值可以是river-mock 和mockjs。不需要mock数据时可以不配置
+    "rulebase": "./interfaceRules/",         // [选填][string] mock规则文件夹路径。不需要mock数据时可以不配置
                                              //  默认会设置为与本配置文件同级别的文件夹下名位 interfaceRules的文件夹
     "status": "online",                      // [必填][string] 全局代理状态，取值只能是 interface.urls中出现过的键值或者mock
     "interfaces": [ {
@@ -324,25 +324,26 @@ app.get( '/getMycart', function( req, res ) {
                                              // 不配置时默认为id + ".rule.json"。
         "isRuleStatic": true,                // [选填][boolean] 数据规则文件是否为静态，即在开启mock状态时，程序会将ruleFile
                                              // 按照静态文件读取, 而非解析该规则文件生成数据，默认为false
-        "status": "online",                  // [选填][string] 当前代理状态，可以是urls中的某个键值(online, prep, daily)或者mock
-                                             // 或mockerr。如果不填，则代理状态依照全局设置的代理状态；如果设置为mock，则返回ruleFile中定义
-                                             // response 内容；如果设置为mockerr，则返回ruleFile中定义的responseError内容。
+        "status": "online",                  // [选填][string] 当前代理状态，可以是urls中的某个键值(online, prep, daily)
+                                             // 或者mock或mockerr。如果不填，则代理状态依照全局设置的代理状态；如果设置为mock，
+                                             // 则返回 ruleFile中定义response内容；如果设置为mockerr，则返回ruleFile中定义
+                                             // 的responseError内容。
         "method": "post",                    // [选填][string] 请求方式，取值post|get 默认get
-        "dataType": "json",                  // [选填][string] 返回的数据格式, 取值 json|text, 默认为json
-        "isCookieNeeded": true,              // [选填][boolean] 是否需要传递cookie 默认false
+        "dataType": "json",                  // [选填][string] 返回的数据格式， 取值 json|text|jsonp，仅当
+                                             // bypassProxyOnClient设置为true时，jsonp才有效，否则由Node端发送的请求按json格
+                                             // 式返回数据。默认为json
+        "isCookieNeeded": true,              // [选填][boolean] 是否需要传递cookie默认false
         "encoding": "utf8"                   // [选填][string] 代理的数据源编码类型。取值可以是常用编码类型'utf8', 'gbk', 
-                                             // 'gb2312' 或者 'raw' 如果设置为raw则直接返回2进制buffer，默认为utf8。
-                                             //  注意，不论数据源原来为何种编码，代理之后皆以utf8编码输出。
+                                             // 'gb2312' 或者 'raw' 如果设置为raw则直接返回2进制buffer，默认为utf8
+                                             //  注意，不论数据源原来为何种编码，代理之后皆以utf8编码输出
         "timeout": 5000,                     // [选填][number] 延时设置，默认10000
-        "intercepted": true                  // [选填][boolean] 是否拦截请求，默认为true
-        // format         // 未完待续
-        // filter...      // 未完待续 
+        "intercepted": true,                 // [选填][boolean] 是否拦截请求。当设置为true时，如果在Node端启用了ModelProxy拦截器
+                                             // (见例六),则浏览器端可以直接通过interface id访问该接口，否则无法访问。默认为true
+        "bypassProxyOnClient": false         // [选填][boolean] 在浏览器端使用ModelProxy请求数据时是否绕过代理而直接请求原地址。
+                                             // 当且仅当status 字段不为mock或者mockerr时有效。默认 false
     }, {
         ...
-    } ],
-    combo: {
-        // 未完待续
-    }
+    } ]
 }
 ```
 
