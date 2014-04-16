@@ -18,6 +18,7 @@
  - [API]()
    - [ModelProxy对象创建方式]()
    - [创建ModelProxy对象时指定的profile相关形式]()
+   - [ModelProxy logger设置]()
    - [ModelProxy对象方法]()
  - [如何使用ModelProxy的Mock功能]()
    - [rule.json文件]()
@@ -216,7 +217,7 @@ model.getUser( { sid: 'fdkaldjfgsakls0322yf8' } )
             "prep": "http://s.m.taobao.com/client/search.do",
             "daily": "http://daily.taobao.net/client/search.do"
         },
-        status: 'mock'                            <-- 启用mock状态，覆盖全局status
+        "status": "mock"                            <-- 启用mock状态，覆盖全局status
     } ]
 }
 ```
@@ -294,7 +295,6 @@ app.get( '/getMycart', function( req, res ) {
             res.send( 500, err );
         } );
 } );
-
 ```
 
 ### 完整实例请查看 [demo](demo/)
@@ -306,9 +306,9 @@ app.get( '/getMycart', function( req, res ) {
 {
     "title": "pad淘宝项目数据接口集合定义",       // [必填][string] 接口文档标题
     "version": "1.0.0",                      // [必填][string] 版本号
-    "engine": "river-mock",                  // [选填][string] mock引擎，取值可以是river-mock 和mockjs。不需要mock数据时可以不配置
+    "engine": "river-mock",                  // [选填][string] mock引擎，取值可以是river-mock和mockjs。不需要mock数据时可以不配置
     "rulebase": "./interfaceRules/",         // [选填][string] mock规则文件夹路径。不需要mock数据时可以不配置
-                                             //  默认会设置为与本配置文件同级别的文件夹下名位 interfaceRules的文件夹
+                                             //  默认会设置为与本配置文件同级别的文件夹下名为interfaceRules的文件夹
     "status": "online",                      // [必填][string] 全局代理状态，取值只能是 interface.urls中出现过的键值或者mock
     "interfaces": [ {
         "name": "获取购物车信息",               // [选填][string] 接口名称 生成文档有用
@@ -320,7 +320,7 @@ app.get( '/getMycart', function( req, res ) {
           "prep": "http://url2",             // 预发地址
           "daily": "http://url3",            // 日常地址
         },
-        "ruleFile": "cart.getCart.rule.json",// [选填][string] 对应的数据规则文件，当Proxy Mock状态开启时回返回mock数据，
+        "ruleFile": "cart.getCart.rule.json",// [选填][string] 对应的数据规则文件，当Proxy Mock状态开启时回返回mock数据
                                              // 不配置时默认为id + ".rule.json"。
         "isRuleStatic": true,                // [选填][boolean] 数据规则文件是否为静态，即在开启mock状态时，程序会将ruleFile
                                              // 按照静态文件读取, 而非解析该规则文件生成数据，默认为false
@@ -393,6 +393,13 @@ ModelProxy.create( [ 'Cart.getItem', 'Search.getItem', 'Search.suggest', 'Sessio
 ```js
 ModelProxy.create( 'Search.*' );
 ```
+
+### ModelProxy logger设置
+
+```js
+ModelProxy.setLogger( logger );
+```
+不设置logger的情况下会使用console输出日志
 
 ### ModelProxy对象方法
 

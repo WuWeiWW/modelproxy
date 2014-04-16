@@ -54,7 +54,6 @@ app.get( '/getMycart', function( req, res ) {
         } );
 } );
 
-
 // 配置资源路由
 app.get( '/modelproxy-client.js', function( req, res ) {
 	res.sendfile( './modelproxy-client.js' );
