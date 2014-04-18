@@ -1,7 +1,7 @@
 {
   "name": "midway-modelproxy",
   "description": "midway modelproxy module",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "author": "shanfan <yingzhu.zyz@alibaba-inc.com>",
   "contributors": [
     {
@@ -13,8 +13,7 @@
     "mockjs": "0.1.1",
     "river-mock": "0.0.4",
     "iconv-lite": "0.2.11",
-    "bufferhelper": "0.2.0",
-    "hsf": "1.0.0-beta3"
+    "agentkeepalive": "0.2.2"
   },
   "devDependencies": {
     "mocha": "1.17.1",

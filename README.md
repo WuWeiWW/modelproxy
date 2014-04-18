@@ -311,9 +311,10 @@ app.get( '/getMycart', function( req, res ) {
                                              //  默认会设置为与本配置文件同级别的文件夹下名为interfaceRules的文件夹
     "status": "online",                      // [必填][string] 全局代理状态，取值只能是 interface.urls中出现过的键值或者mock
     "interfaces": [ {
-        "name": "获取购物车信息",               // [选填][string] 接口名称 生成文档有用
-        "desc": "接口负责人: 善繁",             // [选填][string] 接口描述 生成文档有用
-        "version": "0.0.1",                  // [选填][string] 接口版本号 发送请求时会带上版本号字段
+        "name": "获取购物车信息",               // [选填][string] 接口名称
+        "desc": "接口负责人: 善繁",             // [选填][string] 接口描述
+        "version": "0.0.1",                  // [选填][string] 接口版本号，发送请求时会带上版本号字段
+        "type": "http",                      // [选填][string] 接口类型，取值可以是http或者hsf，默认
         "id": "cart.getCart",                // [必填][string] 接口ID，必须由英文单词+点号组成
         "urls": {                            // [如果ruleFile不存在, 则必须有一个地址存在][object] 可供切换的url集合
           "online": "http://url1",           // 线上地址
@@ -339,8 +340,10 @@ app.get( '/getMycart', function( req, res ) {
         "timeout": 5000,                     // [选填][number] 延时设置，默认10000
         "intercepted": true,                 // [选填][boolean] 是否拦截请求。当设置为true时，如果在Node端启用了ModelProxy拦截器
                                              // (见例六),则浏览器端可以直接通过interface id访问该接口，否则无法访问。默认为true
-        "bypassProxyOnClient": false         // [选填][boolean] 在浏览器端使用ModelProxy请求数据时是否绕过代理而直接请求原地址。
+        "bypassProxyOnClient": false,        // [选填][boolean] 在浏览器端使用ModelProxy请求数据时是否绕过代理而直接请求原地址。
                                              // 当且仅当status 字段不为mock或者mockerr时有效。默认 false
+        /* hsf 相关配置*/
+
     }, {
         ...
     } ]
@@ -422,7 +425,6 @@ method为创建model时动态生成，参数 params{Object}, 为请求接口所�
 当mock状态开启时，mock引擎会读取与接口定义相对应的rule.json规则文件，生成相应的数据。该文件应该位于interface.json配置文件中
 ruleBase字段所指定的文件夹中。 (建议该文件夹与interface配置文件同级)
 
-
 ### rule.json文件样式
 
 ```js
@@ -454,3 +456,6 @@ ruleBase字段所指定的文件夹中。 (建议该文件夹与interface配置�
 
 ## [附三] 中途岛整体架构图及modelproxy所处位置
 ![](http://work.taobao.net/attachments/download/2929/Midway.png)
+
+
+如有任何问题请联系[@善繁](https://work.alibaba-inc.com/work/u/68162)
