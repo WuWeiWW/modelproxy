@@ -15,6 +15,10 @@
    - [用例七 代理带cookie的请求并且回写cookie]()
  - [完整实例](demo/)
  - [配置文件详解]()
+   - [interface.json 配置]()
+   - [http interface 配置]()
+   - [hsf interface 配置]()
+   - [配置文件中得变量支持]()
  - [API]()
    - [ModelProxy对象创建方式]()
    - [创建ModelProxy对象时指定的profile相关形式]()
@@ -301,6 +305,7 @@ app.get( '/getMycart', function( req, res ) {
 
 ## 配置文件详解
 ---
+### interface.json 配置结构
 
 ``` js
 {
@@ -311,44 +316,102 @@ app.get( '/getMycart', function( req, res ) {
                                              //  默认会设置为与本配置文件同级别的文件夹下名为interfaceRules的文件夹
     "status": "online",                      // [必填][string] 全局代理状态，取值只能是 interface.urls中出现过的键值或者mock
     "interfaces": [ {
-        "name": "获取购物车信息",               // [选填][string] 接口名称
-        "desc": "接口负责人: 善繁",             // [选填][string] 接口描述
-        "version": "0.0.1",                  // [选填][string] 接口版本号，发送请求时会带上版本号字段
-        "type": "http",                      // [选填][string] 接口类型，取值可以是http或者hsf，默认
-        "id": "cart.getCart",                // [必填][string] 接口ID，必须由英文单词+点号组成
-        "urls": {                            // [如果ruleFile不存在, 则必须有一个地址存在][object] 可供切换的url集合
-          "online": "http://url1",           // 线上地址
-          "prep": "http://url2",             // 预发地址
-          "daily": "http://url3",            // 日常地址
-        },
-        "ruleFile": "cart.getCart.rule.json",// [选填][string] 对应的数据规则文件，当Proxy Mock状态开启时回返回mock数据
-                                             // 不配置时默认为id + ".rule.json"。
-        "isRuleStatic": true,                // [选填][boolean] 数据规则文件是否为静态，即在开启mock状态时，程序会将ruleFile
-                                             // 按照静态文件读取, 而非解析该规则文件生成数据，默认为false
-        "status": "online",                  // [选填][string] 当前代理状态，可以是urls中的某个键值(online, prep, daily)
-                                             // 或者mock或mockerr。如果不填，则代理状态依照全局设置的代理状态；如果设置为mock，
-                                             // 则返回 ruleFile中定义response内容；如果设置为mockerr，则返回ruleFile中定义
-                                             // 的responseError内容。
-        "method": "post",                    // [选填][string] 请求方式，取值post|get 默认get
-        "dataType": "json",                  // [选填][string] 返回的数据格式， 取值 json|text|jsonp，仅当
-                                             // bypassProxyOnClient设置为true时，jsonp才有效，否则由Node端发送的请求按json格
-                                             // 式返回数据。默认为json
-        "isCookieNeeded": true,              // [选填][boolean] 是否需要传递cookie默认false
-        "encoding": "utf8"                   // [选填][string] 代理的数据源编码类型。取值可以是常用编码类型'utf8', 'gbk', 
-                                             // 'gb2312' 或者 'raw' 如果设置为raw则直接返回2进制buffer，默认为utf8
-                                             //  注意，不论数据源原来为何种编码，代理之后皆以utf8编码输出
-        "timeout": 5000,                     // [选填][number] 延时设置，默认10000
-        "intercepted": true,                 // [选填][boolean] 是否拦截请求。当设置为true时，如果在Node端启用了ModelProxy拦截器
-                                             // (见例六),则浏览器端可以直接通过interface id访问该接口，否则无法访问。默认为true
-        "bypassProxyOnClient": false,        // [选填][boolean] 在浏览器端使用ModelProxy请求数据时是否绕过代理而直接请求原地址。
-                                             // 当且仅当status 字段不为mock或者mockerr时有效。默认 false
-        /* hsf 相关配置*/
-
-    }, {
-        ...
+        // 此处设置每一个interface的具体配置
+        // ... 不同类型的接口配置方法见下文
     } ]
 }
 ```
+
+### http interface 配置
+
+``` js
+ {
+    "name": "获取购物车信息",               // [选填][string] 接口名称
+    "desc": "接口负责人: 善繁",             // [选填][string] 接口描述
+    "version": "0.0.1",                  // [选填][string] 接口版本号，发送请求时会带上版本号字段
+    "type": "http",                      // [选填][string] 接口类型，取值可以是http或者hsf，默认
+    "id": "cart.getCart",                // [必填][string] 接口ID，必须由英文单词+点号组成
+    "urls": {                            // [如果ruleFile不存在, 则必须有一个地址存在][object] 可供切换的url集合
+      "online": "http://url1",           // 线上地址
+      "prep": "http://url2",             // 预发地址
+      "daily": "http://url3",            // 日常地址
+    },
+    "ruleFile": "cart.getCart.rule.json",// [选填][string] 对应的数据规则文件，当Proxy Mock状态开启时回返回mock数据
+                                         // 不配置时默认为id + ".rule.json"。
+    "isRuleStatic": true,                // [选填][boolean] 数据规则文件是否为静态，即在开启mock状态时，程序会将ruleFile
+                                         // 按照静态文件读取, 而非解析该规则文件生成数据，默认为false
+    "status": "online",                  // [选填][string] 当前代理状态，可以是urls中的某个键值(online, prep, daily)
+                                         // 或者mock或mockerr。如果不填，则代理状态依照全局设置的代理状态；如果设置为mock，
+                                         // 则返回 ruleFile中定义response内容；如果设置为mockerr，则返回ruleFile中定义
+                                         // 的responseError内容。
+    "method": "post",                    // [选填][string] 请求方式，取值post|get 默认get
+    "dataType": "json",                  // [选填][string] 返回的数据格式， 取值 json|text|jsonp，仅当
+                                         // bypassProxyOnClient设置为true时，jsonp才有效，否则由Node端发送的请求按json格
+                                         // 式返回数据。默认为json
+    "isCookieNeeded": true,              // [选填][boolean] 是否需要传递cookie默认false
+    "encoding": "utf8"                   // [选填][string] 代理的数据源编码类型。取值可以是常用编码类型'utf8', 'gbk', 
+                                         // 'gb2312' 或者 'raw' 如果设置为raw则直接返回2进制buffer，默认为utf8
+                                         //  注意，不论数据源原来为何种编码，代理之后皆以utf8编码输出
+    "timeout": 5000,                     // [选填][number] 延时设置，默认10000
+    "intercepted": true,                 // [选填][boolean] 是否拦截请求。当设置为true时，如果在Node端启用了ModelProxy拦截器
+                                         // (见例六),则浏览器端可以直接通过interface id访问该接口，否则无法访问。默认为true
+    "bypassProxyOnClient": false,        // [选填][boolean] 在浏览器端使用ModelProxy请求数据时是否绕过代理而直接请求原地址。
+                                         // 当且仅当status 字段不为mock或者mockerr时有效。默认 false
+    /* hsf 相关配置*/
+
+}
+
+```
+
+### hsf interface 配置
+
+``` js
+{
+// 设计中...
+}
+```
+
+### tms interface 配置
+``` js
+{
+// 设计中...
+}
+```
+
+### 配置文件中的全局变量支持
+如果ModelProxy的初始化工作由 [midway-sys](http://gitlab.alibaba-inc.com/midway/midway-sys/tree/master)完成，则系统启动时回读取全局变量对象，并将次变量对象复制给ModelProxy 做初始化工作。此时配置在interface.json文件中的所有变量将被替换。
+
+* 例
+
+假设midway-sys启动模块读入的全局变量对象包含如下片段
+
+``` js
+{
+    ...
+    status: 'online'
+    hsf: {
+        onlineArr: '192.168.0.1'
+    }
+}
+```
+
+interface.json 文件有如下配置片段
+```js
+{  
+   ...
+   "status": "$status$",
+   "hsfurl": "$hsf.onlineArr$/getData"
+}
+```
+
+替换结果为
+```js
+{  
+   ...
+   "status": "online",
+   "hsfurl": "192.168.0.1/getData"
+}
+
 
 ## API
 ---
