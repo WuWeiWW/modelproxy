@@ -492,6 +492,8 @@ method为创建model时动态生成，参数 params{Object}, 为请求接口所�
 * .error( errCallback )
 指定全局调用出错处理函数， errCallback 的参数为Error对象。
 
+* .fail( errCallback )
+同 error方法，方便不同的语法使用习惯。
 
 ## 如何使用ModelProxy的Mock功能
 ---
