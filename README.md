@@ -63,7 +63,7 @@
     "title": "pad淘宝项目数据接口集合定义",
     "version": "1.0.0",
     "engine": "mockjs",
-    "rulebase": "./interfaceRules/",
+    "rulebase": "interfaceRules",
     "status": "online",
     "interfaces": [ {
         "name": "主搜索接口",
@@ -229,7 +229,7 @@ model.getUser( { sid: 'fdkaldjfgsakls0322yf8' } )
 }
 ```
 
-* 第二步 添加接口对应的规则文件到ruleBase(./interfaceRules/)指定的文件夹。mock数据规则请参考[river-mock](http://gitlab.alibaba-inc.com/river/mock/tree/master)和[mockjs](http://mockjs.com)。启动程序后，ModelProxy即返回相关mock数据。
+* 第二步 添加接口对应的规则文件到ruleBase(interfaceRules)指定的文件夹。mock数据规则请参考[river-mock](http://gitlab.alibaba-inc.com/river/mock/tree/master)和[mockjs](http://mockjs.com)。启动程序后，ModelProxy即返回相关mock数据。
 
 ### 用例五 使用ModelProxy拦截请求
 
