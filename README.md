@@ -18,7 +18,7 @@
    - [interface.json 配置]()
    - [http interface 配置]()
    - [hsf interface 配置]()
-   - [配置文件中得变量支持]()
+   - [配置文件中的全局变量引入]()
  - [API]()
    - [ModelProxy对象创建方式]()
    - [创建ModelProxy对象时指定的profile相关形式]()
@@ -378,7 +378,7 @@ app.get( '/getMycart', function( req, res ) {
 }
 ```
 
-### 配置文件中的全局变量支持
+### 配置文件中的全局变量引入
 如果ModelProxy的初始化工作由 [midway-sys](http://gitlab.alibaba-inc.com/midway/midway-sys/tree/master)完成，则系统启动时回读取全局变量对象，并将次变量对象复制给ModelProxy 做初始化工作。此时配置在interface.json文件中的所有变量将被替换。
 
 * 例
