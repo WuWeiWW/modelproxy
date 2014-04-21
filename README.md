@@ -81,8 +81,11 @@
 // 引入模块
 var ModelProxy = require( 'modelproxy' ); 
 
+// interface配置文件的绝对路径
+var path = require('path').resolve( __dirname, './interface_sample.json' );
+
 // 初始化引入接口配置文件  （注意：初始化工作有且只有一次）
-ModelProxy.init( './interface_sample.json' );
+ModelProxy.init( path );
 ```
 
 * 第三步 使用ModelProxy
@@ -210,7 +213,7 @@ model.getUser( { sid: 'fdkaldjfgsakls0322yf8' } )
     "title": "pad淘宝数据接口定义",
     "version": "1.0.0",
     "engine": "river-mock",                       <-- 指定mock引擎
-    "rulebase": "./interfaceRules/",              <-- 指定存放相关mock规则文件的目录
+    "rulebase": "interfaceRules",   <-- 指定存放相关mock规则文件的目录名，约定位置与interface.json文件存放在同一目录，默认为 interfaceRules
     "status": "online",
     "interfaces": [ {
         "name": "主搜索接口",
@@ -233,7 +236,8 @@ model.getUser( { sid: 'fdkaldjfgsakls0322yf8' } )
 ```js
 var app = require( 'connect' )();
 var ModelProxy = require( 'modelproxy' );
-ModelProxy.init( './interface_sample.json' );
+var path = require('path').resolve( __dirname, './interface_sample.json' );
+ModelProxy.init( path );
 
 // 指定需要拦截的路径
 app.use( '/model', ModelProxy.Interceptor );
@@ -312,8 +316,8 @@ app.get( '/getMycart', function( req, res ) {
     "title": "pad淘宝项目数据接口集合定义",       // [必填][string] 接口文档标题
     "version": "1.0.0",                      // [必填][string] 版本号
     "engine": "river-mock",                  // [选填][string] mock引擎，取值可以是river-mock和mockjs。不需要mock数据时可以不配置
-    "rulebase": "./interfaceRules/",         // [选填][string] mock规则文件夹路径。不需要mock数据时可以不配置
-                                             //  默认会设置为与本配置文件同级别的文件夹下名为interfaceRules的文件夹
+    "rulebase": "interfaceRules",            // [选填][string] mock规则文件夹名称。不需要mock数据时可以不配置。约定该文件夹与
+                                             // interface.json配置文件位于同一文件夹。默认为interfaceRules
     "status": "online",                      // [必填][string] 全局代理状态，取值只能是 interface.urls中出现过的键值或者mock
     "interfaces": [ {
         // 此处设置每一个interface的具体配置
@@ -418,6 +422,10 @@ interface.json 文件有如下配置片段
 
 ## API
 ---
+
+### ModelProxy.init
+* ModelProxy.init( path ) path 为接口配置文件所在的绝对路径
+
 ### ModelProxy 对象创建方式
 
 * 直接new

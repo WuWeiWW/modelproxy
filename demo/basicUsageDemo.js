@@ -2,7 +2,7 @@ var app = require( 'express' )();
 var ModelProxy = require( '../index' );
 
 // 初始化modelproxy接口文件
-ModelProxy.init( './interface_demo.json' );
+ModelProxy.init( require('path').resolve( __dirname, './interface_demo.json' ) );
 
 // 配置拦截器，浏览器端可通过访问 127.0.0.1/model/[interfaceId]
 app.use( '/model/', ModelProxy.Interceptor );
