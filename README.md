@@ -372,6 +372,7 @@ app.get( '/getMycart', function( req, res ) {
 ```
 
 ### tms interface 配置
+
 ``` js
 {
 // 设计中...
@@ -396,6 +397,7 @@ app.get( '/getMycart', function( req, res ) {
 ```
 
 interface.json 文件有如下配置片段
+
 ```js
 {  
    ...
@@ -405,13 +407,14 @@ interface.json 文件有如下配置片段
 ```
 
 替换结果为
+
 ```js
 {  
    ...
    "status": "online",
    "hsfurl": "192.168.0.1/getData"
 }
-
+```
 
 ## API
 ---
