@@ -384,11 +384,11 @@ app.get( '/getMycart', function( req, res ) {
 ```
 
 ### 配置文件中的全局变量引入
-如果ModelProxy的初始化工作由 [midway-sys](http://gitlab.alibaba-inc.com/midway/midway-sys/tree/master)完成，则系统启动时回读取全局变量对象，并将次变量对象复制给ModelProxy 做初始化工作。此时配置在interface.json文件中的所有变量将被替换。
+需要调用 *ModelProxy.init( path, variables )* 来解析interface.json中引用的变量。其中variables可能从[midway-global](http://gitlab.alibaba-inc.com/midway/midway-global/tree/master)模块读取，也可以是任意指定值。
 
 * 例
 
-假设midway-sys启动模块读入的全局变量对象包含如下片段
+variables 对象：
 
 ``` js
 {
@@ -410,7 +410,7 @@ interface.json 文件有如下配置片段
 }
 ```
 
-替换结果为
+替换结果为：
 
 ```js
 {  
@@ -424,7 +424,8 @@ interface.json 文件有如下配置片段
 ---
 
 ### ModelProxy.init
-* ModelProxy.init( path ) path 为接口配置文件所在的绝对路径
+* ModelProxy.init( path[, variables] ) path为接口配置文件所在的绝对路径, variables 为变量对象，包含interface.
+json文件中所引用过的变量。
 
 ### ModelProxy 对象创建方式
 
