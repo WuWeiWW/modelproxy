@@ -442,7 +442,7 @@ var model = new ModelProxy( profile );
 var model = ModelProxy.create( profile );
 ```
 
-### 创建ModelProxy对象时指定的*profile*相关形式
+### 创建ModelProxy对象时指定的 *profile* 相关形式
 * 接口ID  生成的对象会取ID最后'.'号后面的单词作为方法名
 
 ```js
@@ -522,11 +522,11 @@ ruleBase字段所指定的文件夹中。 (建议该文件夹与interface配置�
 
  **Overview: `96%` coverage `272` SLOC** 
 
-[modelproxy.js](lib/modelproxy.js)            : `98%` coverage `57` SLOC
+[modelproxy.js](tests/modelproxy.test.js)            : `98%` coverage `57` SLOC
 
-[interfacemanager.js](lib/interfacemanager.js): `98%` coverage `76` SLOC
+[interfacemanager.js](tests/interfacemanager.test.js): `98%` coverage `76` SLOC
 
-[proxyfactory](lib/proxyfactory.js)           : `93%` coverage `139` SLOC
+[proxyfactory](tests/proxyfactory.test.js)           : `93%` coverage `139` SLOC
 
 
 ## [附二] [前后端分离思考与实践](http://ued.taobao.org/blog/2014/04/modelproxy/)
