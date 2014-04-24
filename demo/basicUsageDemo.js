@@ -34,6 +34,7 @@ app.get( '/getCombinedData', function( req, res ) {
             	"getNav_滑板": data4
             } );
         } ).error( function( err ) {
+            console.log( err );
             res.send( 500, err );
         } );
 } );
@@ -50,6 +51,7 @@ app.get( '/getMycart', function( req, res ) {
             res.setHeader( 'Set-Cookie', setCookies );
             res.send( data );
         }, function( err ) {
+            console.log( err );
             res.send( 500, err );
         } );
 } );
