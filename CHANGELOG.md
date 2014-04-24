@@ -1,4 +1,7 @@
-## 0.3.0-alpha-2
+## v0.3.0-beta
+* Proxy 插件化实现
+
+## v0.3.0-alpha-2
 * 升级river-mock
 
 ## v0.3.0-alpha
