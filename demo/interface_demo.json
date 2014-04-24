@@ -18,7 +18,8 @@
             "online": "http://api.s.m.taobao.com/search.json"
         },
         "dataType": "jsonp",
-        "bypassProxyOnClient": true
+        "bypassProxyOnClient": true,
+        "status": "mock"
     }, {
         "name": "热词推荐接口",
         "id": "Search.suggest",

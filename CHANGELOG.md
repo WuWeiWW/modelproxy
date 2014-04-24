@@ -1,3 +1,6 @@
+## 0.3.0-alpha-2
+* 升级river-mock
+
 ## v0.3.0-alpha
 * proxy底层采用继承方式重构
 * 支持捕获customized code异常
