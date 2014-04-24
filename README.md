@@ -344,6 +344,7 @@ app.get( '/getMycart', function( req, res ) {
                                          // 不配置时默认为id + ".rule.json"。
     "isRuleStatic": true,                // [选填][boolean] 数据规则文件是否为静态，即在开启mock状态时，程序会将ruleFile
                                          // 按照静态文件读取, 而非解析该规则文件生成数据，默认为false
+    "engine": "mockjs"                   // [选填][string] mock引擎，取值可以是river-mock和mockjs。覆盖全局engine
     "status": "online",                  // [选填][string] 当前代理状态，可以是urls中的某个键值(online, prep, daily)
                                          // 或者mock或mockerr。如果不填，则代理状态依照全局设置的代理状态；如果设置为mock，
                                          // 则返回 ruleFile中定义response内容；如果设置为mockerr，则返回ruleFile中定义
@@ -353,7 +354,7 @@ app.get( '/getMycart', function( req, res ) {
                                          // bypassProxyOnClient设置为true时，jsonp才有效，否则由Node端发送的请求按json格
                                          // 式返回数据。默认为json
     "isCookieNeeded": true,              // [选填][boolean] 是否需要传递cookie默认false
-    "encoding": "utf8"                   // [选填][string] 代理的数据源编码类型。取值可以是常用编码类型'utf8', 'gbk', 
+    "encoding": "utf8",                  // [选填][string] 代理的数据源编码类型。取值可以是常用编码类型'utf8', 'gbk', 
                                          // 'gb2312' 或者 'raw' 如果设置为raw则直接返回2进制buffer，默认为utf8
                                          //  注意，不论数据源原来为何种编码，代理之后皆以utf8编码输出
     "timeout": 5000,                     // [选填][number] 延时设置，默认10000
@@ -361,7 +362,6 @@ app.get( '/getMycart', function( req, res ) {
                                          // (见例六),则浏览器端可以直接通过interface id访问该接口，否则无法访问。默认为true
     "bypassProxyOnClient": false,        // [选填][boolean] 在浏览器端使用ModelProxy请求数据时是否绕过代理而直接请求原地址。
                                          // 当且仅当status 字段不为mock或者mockerr时有效。默认 false
-    /* hsf 相关配置*/
 
 }
 
