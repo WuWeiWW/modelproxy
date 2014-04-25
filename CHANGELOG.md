@@ -1,3 +1,6 @@
+## v0.3.0-beta1
+* 修复interface Rule路径读取bug
+
 ## v0.3.0-beta
 * Proxy 插件化实现
 
