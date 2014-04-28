@@ -1,3 +1,6 @@
+## v0.3.1
+* 
+
 ## v0.3.0
 * 修复querystring 与version参数拼接的bug
 * 修复done内方法异常捕获error变量未定义的bug
