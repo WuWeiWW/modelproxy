@@ -1,3 +1,6 @@
+## v0.3.2-alpha
+* 增强statusCode不为200的报错内容
+
 ## v0.3.1
 * 增强处理StatusCode 不为200的情况
 * 增强错误提示，每次请求代理失败，需要明确对应的interface id以及请求的url，以方便错误定位
