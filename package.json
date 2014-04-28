@@ -1,11 +1,7 @@
 {
   "name": "midway-modelproxy",
   "description": "midway modelproxy module",
-<<<<<<< HEAD
   "version": "0.3.2-alpha",
-=======
-  "version": "0.3.0-beta",
->>>>>>> 7e6572874813b8d34b0446eac798a446737134b3
   "author": "shanfan <yingzhu.zyz@alibaba-inc.com>",
   "contributors": [
     {
