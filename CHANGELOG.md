@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ## v0.3.2-alpha
 * 增强statusCode不为200的报错内容
 
@@ -21,6 +22,17 @@
 ## v0.3.0-alpha
 * proxy底层采用继承方式重构。
 * 支持捕获customized code异常。
+=======
+## v0.3.0-beta
+* Proxy 插件化实现
+
+## v0.3.0-alpha-2
+* 升级river-mock
+
+## v0.3.0-alpha
+* proxy底层采用继承方式重构
+* 支持捕获customized code异常
+>>>>>>> 7e6572874813b8d34b0446eac798a446737134b3
 
 ## v0.2.8
 * 支持interface配置文件变量引用。
