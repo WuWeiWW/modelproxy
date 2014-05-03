@@ -3,6 +3,13 @@
     "version": "1.0.0",
     "engine": "mockjs",
     "rulebase": "interfaceRules",
+    "hsf": {
+        "configServers": {
+            "online": "commonconfig.config-host.taobao.com",
+            "daily": "10.232.16.8",          
+            "prep": "172.23.226.84"
+        }
+    },
     "status": "online",
     "interfaces": [ {
         "name": "我的购物车",
@@ -17,7 +24,8 @@
         "urls": {
             "online": "http://api.s.m.taobao.com/search.json"
         },
-        "dataType": "jsonp"
+        "dataType": "json",
+        "status": "mock"
     }, {
         "name": "热词推荐接口",
         "id": "Search.suggest",
@@ -38,8 +46,20 @@
         },
         "method": "post",
         "dataType": "text"
-    } ],
-    "combo": {
-        "getMyData": [ "Cart.getCart", "Search.suggest" ]
-    }
+    }, {
+        "version": "1.0.0",
+        "type": "hsf",
+        "id": "UserData.append",
+        "service": "com.taobao.uic.common.service.userdata.UicDataService",
+        "methodName": "insertData",
+        "method": "POST",
+        "isRuleStatic": true
+    }, {
+        "version": "1.0.0",
+        "type": "hsf",
+        "id": "UserData.getData",
+        "service": "com.taobao.uic.common.service.userdata.UicDataService",
+        "methodName": "getData",
+        "method": "POST"
+    } ]
 }

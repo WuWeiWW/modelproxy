@@ -13,6 +13,7 @@
    - [用例五 使用ModelProxy拦截请求]()
    - [用例六 在浏览器端使用ModelProxy]()
    - [用例七 代理带cookie的请求并且回写cookie]()
+   - [用例八 使用ModelProxy代理HSF的consumer功能]()
  - [完整实例](demo/)
  - [配置文件详解]()
    - [interface.json 配置]()
@@ -64,12 +65,12 @@
     "version": "1.0.0",
     "engine": "mockjs",
     "rulebase": "interfaceRules",
-    "status": "online",
+    "status": "prod",
     "interfaces": [ {
         "name": "主搜索接口",
         "id": "Search.getItems",
         "urls": {
-            "online": "http://s.m.taobao.com/client/search.do"
+            "prod": "http://s.m.taobao.com/client/search.do"
         }
     } ]
 }
@@ -117,19 +118,19 @@ searchModel.searchItems( { keyword: 'iphone6' } )
         "name": "主搜索搜索接口",
         "id": "Search.list",
         "urls": {
-            "online": "http://s.m.taobao.com/search.do"
+            "prod": "http://s.m.taobao.com/search.do"
         }
     }, {
         "name": "热词推荐接口",
         "id": "Search.suggest",
         "urls": {
-            "online": "http://suggest.taobao.com/sug"
+            "prod": "http://suggest.taobao.com/sug"
         }
     }, {
         "name": "导航获取接口",
         "id": "Search.getNav",
         "urls": {
-            "online": "http://s.m.taobao.com/client/search.do"
+            "prod": "http://s.m.taobao.com/client/search.do"
         }
     } ]
 }
@@ -174,14 +175,16 @@ model.suggest( { q: '女' } )
     "interfaces": [ {
         "name": "用户信息查询接口",
         "id": "Session.getUser",
+        "type": "http",
         "urls": {
-            "online": "http://taobao.com/getUser.do"
+            "prod": "http://taobao.com/getUser.do"
         }
     }, {
         "name": "订单获取接口",
         "id": "Order.getOrder",
+        "type": "http",
         "urls": {
-            "online": "http://taobao.com/getOrder"
+            "prod": "http://taobao.com/getOrder"
         }
     } ]
 }
@@ -214,13 +217,13 @@ model.getUser( { sid: 'fdkaldjfgsakls0322yf8' } )
     "version": "1.0.0",
     "engine": "river-mock",                       <-- 指定mock引擎
     "rulebase": "interfaceRules",   <-- 指定存放相关mock规则文件的目录名，约定位置与interface.json文件存放在同一目录，默认为 interfaceRules
-    "status": "online",
+    "status": "prod",
     "interfaces": [ {
         "name": "主搜索接口",
         "id": "Search.getItems",
         "ruleFile": "Search.getItems.rule.json",  <-- 指定数据mock规则文件名，如果不配置，则将默认设置为 id + '.rule.json'
         "urls": {
-            "online": "http://s.m.taobao.com/client/search.do",
+            "prod": "http://s.m.taobao.com/client/search.do",
             "prep": "http://s.m.taobao.com/client/search.do",
             "daily": "http://daily.taobao.net/client/search.do"
         },
@@ -305,6 +308,56 @@ app.get( '/getMycart', function( req, res ) {
 } );
 ```
 
+### 用例八 使用ModelProxy代理HSF的consumenr功能
+
+* 第一步，在interface.json文件中配置hsf interface
+
+``` js
+{
+    "title": "pad淘宝项目数据接口集合定义",
+    "version": "1.0.0",                      
+    "engine": "river-mock",                  
+    "status": "prod",                        
+    "hsf": {                              
+        "configServers": {
+            "prod": "commonconfig.config-host.taobao.com",
+            "daily": "10.232.16.8",          
+            "prep": "172.23.226.84"
+        }
+    },
+    interfaces:[ {
+        "type": "hsf",
+        "id": "UserService.append",
+        "service": "com.taobao.uic.common.service.userdata.UicDataService",
+        "methodName": "insertData"
+    } ]
+}
+```
+
+* 第二步，使用ModelProxy
+
+```js
+
+var UserService = ModelProxy.create( 'UserService.*' );
+
+var user = [];
+user.push( require( 'js-to-java' ).Long(456) );
+user.push('data-info-userdata');
+user.push('gongyangyu');
+user.push('langneng');
+
+UserService.append( user )
+    .done( function( result ) {
+         console.log( result );
+     } ).error( function( err ) {
+         console.log( err );
+     } );
+```
+
+* `补充说明`：
+1. 使用ModelProxy调用hsf服务时，其所需要的参数类型及结构由hsf服务提供者决定。当服务提供者使用java发布service时，其参数要求有确定的数据类型，关于java和js之间的数据类型转换，请参考[node-hsf之Java 对象与 Node 的对应关系以及调用方法章节](http://gitlab.alibaba-inc.com/node/node-hsf/tree/master)。推荐使用[js-to-java](https://github.com/node-modules/js-to-java)来辅助编写Java对象。关于hsf的相关说明请参考[HSF项目说明](http://confluence.taobao.ali.com/pages/viewpage.action?pageId=819280)。此外，您可以使用[HSF服务治理](http://ops.jm.taobao.net/service-manager/service_search/index.htm?envType=daily)查询相关服务接口，并且使用[Nexus](http://mvnrepo.taobao.ali.com/nexus/index.html#welcome)查询并获得相关jar包。
+2. hsf 的mock方法与其他类型代理无区别，且可以参照例六直接在浏览器端调用hsf service
+
 ### 完整实例请查看 [demo](demo/)
 
 ## 配置文件详解
@@ -318,7 +371,23 @@ app.get( '/getMycart', function( req, res ) {
     "engine": "river-mock",                  // [选填][string] mock引擎，取值可以是river-mock和mockjs。不需要mock数据时可以不配置
     "rulebase": "interfaceRules",            // [选填][string] mock规则文件夹名称。不需要mock数据时可以不配置。约定该文件夹与
                                              // interface.json配置文件位于同一文件夹。默认为interfaceRules
-    "status": "online",                      // [必填][string] 全局代理状态，取值只能是 interface.urls中出现过的键值或者mock
+    "status": "prod",                        // [必填][string] 全局代理状态，取值只能是 interface.urls中出现过的键值或者mock
+    "hsf": {                                 // hsfClient相关配置，不需要时可以不配置。参考node-hsf
+        "configServers": {                   // hsf服务器配置地址，哪一个地址被启用取决于 status字段
+            "prod": "commonconfig.config-host.taobao.com",
+            "daily": "10.232.16.8",          
+            "prep": "172.23.226.84"
+        },
+        "connectTimeout": 3,                 // [选填][number] 建立连接超时时间，默认为3秒
+        "responseTimeout": 3,                // [选填][number] 响应超时时间，默认为3秒
+        "routeInterval": 60,                 // [选填][number] 向configSvr重新请求服务端地址、更新地址列表的间隔时间，默认为1分钟
+        "snapshot": false,                   // [选填][boolean] 是否使用快照功能，使用快照则在启动的时候如果无法连接到config
+                                             // server，则读取本地缓存的服务者地址。默认false
+        "logOff": true,                      // [选填][boolean] 是否关闭日志。默认false
+        "keepAlive": true,                   // [选填][boolean] 此client下生成的所有consumer是否与服务端维持长连接，默认为true
+        "noDelay": true                      // [选填][boolean] 设置此client下生成的所有consumer是否关闭nagle算法，默认为true
+    },
+
     "interfaces": [ {
         // 此处设置每一个interface的具体配置
         // ... 不同类型的接口配置方法见下文
@@ -333,10 +402,10 @@ app.get( '/getMycart', function( req, res ) {
     "name": "获取购物车信息",               // [选填][string] 接口名称
     "desc": "接口负责人: 善繁",             // [选填][string] 接口描述
     "version": "0.0.1",                  // [选填][string] 接口版本号，发送请求时会带上版本号字段
-    "type": "http",                      // [选填][string] 接口类型，取值可以是http或者hsf，默认
+    "type": "http",                      // [必填][string] 接口类型，取值可以是http或者hsf，使用http接口时其值必须为http
     "id": "cart.getCart",                // [必填][string] 接口ID，必须由英文单词+点号组成
     "urls": {                            // [如果ruleFile不存在, 则必须有一个地址存在][object] 可供切换的url集合
-      "online": "http://url1",           // 线上地址
+      "prod": "http://url1",             // 线上地址
       "prep": "http://url2",             // 预发地址
       "daily": "http://url3",            // 日常地址
     },
@@ -345,7 +414,7 @@ app.get( '/getMycart', function( req, res ) {
     "isRuleStatic": true,                // [选填][boolean] 数据规则文件是否为静态，即在开启mock状态时，程序会将ruleFile
                                          // 按照静态文件读取, 而非解析该规则文件生成数据，默认为false
     "engine": "mockjs"                   // [选填][string] mock引擎，取值可以是river-mock和mockjs。覆盖全局engine
-    "status": "online",                  // [选填][string] 当前代理状态，可以是urls中的某个键值(online, prep, daily)
+    "status": "prod",                    // [选填][string] 当前代理状态，可以是urls中的某个键值(prod, prep, daily)
                                          // 或者mock或mockerr。如果不填，则代理状态依照全局设置的代理状态；如果设置为mock，
                                          // 则返回 ruleFile中定义response内容；如果设置为mockerr，则返回ruleFile中定义
                                          // 的responseError内容。
@@ -371,7 +440,29 @@ app.get( '/getMycart', function( req, res ) {
 
 ``` js
 {
-// 设计中...
+    "name": "获取购物车信息",               // [选填][string] 接口名称
+    "desc": "接口负责人: xxx",             // [选填][string] 接口描述
+    "version": "0.0.1.daily",            // [选填][string] 接口版本号，发送请求时会带上版本号字段
+    "type": "hsf",                       // [必填][string] 接口类型，取值可以是http或者hsf，配置hsf接口时其值必须为hsf
+    "id": "UserData.append",             // [必填][string] 接口ID，必须由英文单词+点号组成
+    "service": "com.taobao.uic.common.service.userdata.UicDataService",  // 服务名
+    "methodName": "insertData",          // [必填][string] 服务方法名
+    "method": "POST",                    // [选填][string] 当需要在浏览器端通过ModelProxy调用该接口时，需要指定method类型
+                                         // 取值可能是 POST 和 GET。默认GET
+    "ruleFile": "cart.getCart.rule.json",// [选填][string] 对应的数据规则文件，当Proxy Mock状态开启时回返回mock数据
+                                         // 不配置时默认为id + ".rule.json"。
+    "isRuleStatic": true,                // [选填][boolean] 数据规则文件是否为静态，即在开启mock状态时，程序会将ruleFile
+                                         // 按照静态文件读取, 而非解析该规则文件生成数据，默认为false
+    "intercepted": true,                 // [选填][boolean] 是否拦截请求。当设置为true时，如果在Node端启用了ModelProxy拦截器
+                                         // (见例六),则浏览器端可以直接通过interface id访问该接口，否则无法访问。默认为true
+    "dataType": "json",                  // [选填][string] 数据返回类型。注意：此字段用于在浏览器使用ModelProxy调用该接口时指定的
+                                         // 返回数据类型。 在Node端，hsf返回的数据类型由java service本身返回的类型决定
+    "group": "hsf",                      // [选填][string] group服务分组，默认为hsf，一般不需要更改
+    "connectTimeout": 3,                 // [选填][number] 建立连接超时时间，默认为3秒
+    "responseTimeout": 3,                // [选填][number] 响应超时时间，默认为3秒
+    "routeInterval": 60,                 // [选填][number] 向configSvr重新请求服务端地址、更新地址列表的间隔时间，默认为1分钟
+    "keepAlive": true,                   // [选填][boolean] 此consumer是否与服务端维持长连接，默认为true
+    "noDelay": true                      // [选填][boolean] 此consumer是否关闭nagle算法，默认为true
 }
 ```
 
@@ -393,9 +484,9 @@ variables 对象：
 ``` js
 {
     ...
-    status: 'online'
+    status: 'prod'
     hsf: {
-        onlineArr: '192.168.0.1'
+        prodArr: '192.168.0.1'
     }
 }
 ```
@@ -406,7 +497,7 @@ interface.json 文件有如下配置片段
 {  
    ...
    "status": "$status$",
-   "hsfurl": "$hsf.onlineArr$/getData"
+   "hsfurl": "$hsf.prodArr$/getData"
 }
 ```
 
@@ -415,7 +506,7 @@ interface.json 文件有如下配置片段
 ```js
 {  
    ...
-   "status": "online",
+   "status": "prod",
    "hsfurl": "192.168.0.1/getData"
 }
 ```

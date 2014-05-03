@@ -11,14 +11,39 @@ app.get( '/index', function( req, res ) {
     res.sendfile( 'modelproxy-client.html' );
 } );
 
-var model = ModelProxy.create( 'Test.post' );
-model.post( {
-    a: 'abc',
-    b: 'bcd',
-    c: '{"a":"b"}'
-} ).done( function( data ) {
-    console.log( data );
-} );
+// // Post Test
+// var model = ModelProxy.create( 'Test.post' );
+// model.post( {
+//     a: 'abc',
+//     b: 'bcd',
+//     c: '{"a":"b"}'
+// } ).done( function( data ) {
+//     console.log( data );
+// } );
+
+// User Test
+// var User = ModelProxy.create( 'UserData.append' );
+// var user = [], java = require( 'js-to-java' );
+// user.push(java.Long(456));
+// user.push('data-info-userdata');
+// user.push('gongyangyu');
+// user.push('langneng');
+// User.append( user )
+//     .done( function( result ) {
+//         console.log( result );
+//     } ).error( function( err ) {
+//         console.log( err );
+//     } );
+
+// var args = [];
+// args.push(java.Long(123));
+// args.push('data-info-userdata');
+// args.push('langneng');
+
+// User.getData( args )
+//     .done( function( result ) {
+//         console.log( result );
+//     } );
 
 app.get( '/getCombinedData', function( req, res ) {
 	var searchModel = ModelProxy.create( 'Search.*' );

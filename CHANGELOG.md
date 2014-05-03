@@ -1,3 +1,12 @@
+## v0.4.0-alpha
+* hsfproxy功能实现
+* hsfproxy拦截器实现
+* hsfproxy浏览器端调用实现
+
+## v0.3.2-beta
+* 修复request interceptor getHeader的bug
+* 重构InterfaceManager，采用Class方式对外提供方法。
+
 ## v0.3.2-alpha
 * 增强statusCode不为200的报错内容
 

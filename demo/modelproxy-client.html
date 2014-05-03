@@ -31,6 +31,15 @@
             } ).error( function( err ) {
                 console.error( err );
             } );
+        var user = ModelProxy.create( 'UserData.append' );
+        user.append( { $class: 'com.taobao.user', id: 123456789, des: 'hello hsf', isValid: true } )
+            .done( function( data ) {
+                console.log( 'hsf proxy data:' );
+                console.log( data );
+            } )
+            .error( function( err ) {
+                console.log( err );
+            } );
 
         // For post demo
         var $btn = Node.all( '#postBtn' );

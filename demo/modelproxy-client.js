@@ -4,6 +4,10 @@ KISSY.add( 'modelproxy', function ( S, IO ) {
     }
     Proxy.prototype = {
         request: function( params, callback, errCallback ) {
+            // special code for hsf proxy
+            if ( this._opt.type === 'hsf' ) {
+                params = { args: JSON.stringify(params) };
+            }
             IO( {
                 url: this._opt.bypass
                         ? this._opt.url 
@@ -12,7 +16,7 @@ KISSY.add( 'modelproxy', function ( S, IO ) {
                         : Proxy.base + '/' + this._opt.id,
                 data: params,
                 type: this._opt.method,
-                dataType: this._opt.dataType,
+                dataType: this._opt.bypass ? 'jsonp': this._opt.dataType,
                 success: callback,
                 error: errCallback
             } );
@@ -154,6 +158,9 @@ KISSY.add( 'modelproxy', function ( S, IO ) {
             }
         },
         error: function( f ) {
+            this._errCallback = f;
+        },
+        fail: function( f ) {
             this._errCallback = f;
         }
     };
