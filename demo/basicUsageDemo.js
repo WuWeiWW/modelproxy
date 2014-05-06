@@ -11,6 +11,15 @@ app.get( '/index', function( req, res ) {
     res.sendfile( 'modelproxy-client.html' );
 } );
 
+
+var Test = ModelProxy.create( 'Test.*' );
+Test.getData()
+    .done( function( data ) {
+        console.log( data );
+    } ).fail( function( err ) {
+        console.log( err );
+    } );
+
 // // Post Test
 // var model = ModelProxy.create( 'Test.post' );
 // model.post( {

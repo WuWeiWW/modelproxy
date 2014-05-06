@@ -1,7 +1,16 @@
 var java = require( 'js-to-java' );
 var HsfProxy = require( '../lib/plugins/hsf' );
 
-HsfProxy.init( {status: 'prod'} );
+HsfProxy.init( { 
+    status: 'daily',
+    hsf: {
+        "configServers": {
+            "prod": "commonconfig.config-host.taobao.com",
+            "daily": "10.232.16.8",          
+            "prep": "172.23.226.84"
+        }
+    }
+} );
 
 var opt1 = {
     "version": "1.0.0.daily",
@@ -30,5 +39,5 @@ args.push(java.long(1500006995808));
 p1.request( args, function( data ) {
     console.log( data );
 }, function( err ) {
-    console.Error( 'ERROR:\n', err );
+    // console.Error( 'ERROR:\n', err );
 } );

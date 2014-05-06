@@ -4,6 +4,7 @@
     "catId|100000-999999": 1
   },
   "response": {
+  	"catId|100000-999999": 1
   },
   "responseError": {
     "CODE": "5301"

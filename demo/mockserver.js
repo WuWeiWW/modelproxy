@@ -12,6 +12,12 @@ app.post( '/post', function( req, res ) {
 	res.send( 'This is the msg from mockserver!' );
 } );
 
+app.get( '/getData', function( req, res ) {
+	setTimeout( function() {
+		res.end( 'ok' );
+	}, 2000 );
+} );
+
 app.listen( 3001 );
 
 // // mock test

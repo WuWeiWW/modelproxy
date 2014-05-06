@@ -1,3 +1,31 @@
+## v0.4.1
+* 暂时移除对hsf-protocol-cpp的依赖，以适应aone开发机部署环境。
+
+## v0.4.0
+* 收藏夹试点项目压测通过，版本已稳定。
+
+## v0.4.0-alpha6
+* 修改hsf timeout参数单位以及group默认值
+
+## v0.4.0-alpha5
+* 支持keepAliveMsecs参数配置，以适应不同部署场景下由于该参数设置不当而发生频繁的socket ECONNRESET错误
+
+## v0.4.0-alpha4
+* http请求失败的错误提示中增加rid，方便定位。
+
+## v0.4.0-alpha3
+* 增加http maxSockets配置文件
+* 增加 http proxy callback 标记，避免重复callback。
+* 修改错误提示中interface id显示成url的错误。
+* http proxy 每次请求增加 rid 以标识唯一性
+
+## v0.4.0-alpha2
+* 修复hsf插件加载的bug
+* 修复cookie专递失效的bug
+
+## v0.4.0-alpha1
+* 修复http timeout引起的socket hang up的bug
+
 ## v0.4.0-alpha
 * hsfproxy功能实现
 * hsfproxy拦截器实现

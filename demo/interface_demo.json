@@ -3,6 +3,10 @@
     "version": "1.0.0",
     "engine": "mockjs",
     "rulebase": "interfaceRules",
+    "http": {
+        "maxSockets": 500,
+        "keepAliveMsecs": 3000
+    },
     "hsf": {
         "configServers": {
             "online": "commonconfig.config-host.taobao.com",
@@ -47,13 +51,29 @@
         "method": "post",
         "dataType": "text"
     }, {
+        "name": "延时测试接口",
+        "id": "Test.getData",
+        "urls": {
+            "online": "http://127.0.0.1:3001/getData"
+        },
+        "dataType": "text"
+
+    }, {
+        "name": "收藏夹接口",
+        "id": "Favorite.getData",
+        "urls": {
+            "dev": "http://favorite.daily.taobao.net/nodejs/item_collect_json.htm"
+        },
+        "status": "dev"
+    }, {
         "version": "1.0.0",
         "type": "hsf",
         "id": "UserData.append",
         "service": "com.taobao.uic.common.service.userdata.UicDataService",
         "methodName": "insertData",
         "method": "POST",
-        "isRuleStatic": true
+        "isRuleStatic": true,
+        "status": "mock"
     }, {
         "version": "1.0.0",
         "type": "hsf",
