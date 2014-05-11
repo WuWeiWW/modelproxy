@@ -7,18 +7,20 @@
  - [使用前必读]()
  - [快速开始]()
    - [用例一 接口文件配置->引入接口配置文件->创建并使用model]()
-   - [用例二 model多接口配置及合并请求]()
+   - [用例二 Model多接口配置及合并请求]()
    - [用例三 Model混合配置及依赖调用]()
    - [用例四 配置mock代理]()
    - [用例五 使用ModelProxy拦截请求]()
    - [用例六 在浏览器端使用ModelProxy]()
    - [用例七 代理带cookie的请求并且回写cookie]()
    - [用例八 使用ModelProxy代理HSF的consumer功能]()
+   - [用例九 使用ModelProxy代理Mtop接口]()
  - [完整实例](demo/)
  - [配置文件详解]()
    - [interface.json 配置]()
-   - [http interface 配置]()
-   - [hsf interface 配置]()
+   - [http 接口配置]()
+   - [mtop 接口配置]()
+   - [hsf 接口配置]()
    - [配置文件中的全局变量引入]()
  - [API]()
    - [ModelProxy对象创建方式]()
@@ -46,7 +48,7 @@
 
 ### ModelProxy工作原理图及相关开发过程图览
 ---
-![](http://gtms03.alicdn.com/tps/i3/T1kp4XFNNXXXXaE5nO-688-514.png)
+![](http://img2.tbcdn.cn/L1/461/1/12bb633225499cdbba656335c3ec845dec7a92b4)
 
 ## 使用前必读
 ---
@@ -109,7 +111,7 @@ searchModel.searchItems( { keyword: 'iphone6' } )
     } );
 ```
 
-### 用例二 model多接口配置及合并请求
+### 用例二 Model多接口配置及合并请求
 * 配置
 
 ```json
@@ -355,8 +357,43 @@ UserService.append( user )
 ```
 
 * `补充说明`：
-1. 使用ModelProxy调用hsf服务时，其所需要的参数类型及结构由hsf服务提供者决定。当服务提供者使用java发布service时，其参数要求有确定的数据类型，关于java和js之间的数据类型转换，请参考[node-hsf之Java 对象与 Node 的对应关系以及调用方法章节](http://gitlab.alibaba-inc.com/node/node-hsf/tree/master)。推荐使用[js-to-java](https://github.com/node-modules/js-to-java)来辅助编写Java对象。关于hsf的相关说明请参考[HSF项目说明](http://confluence.taobao.ali.com/pages/viewpage.action?pageId=819280)。此外，您可以使用[HSF服务治理](http://ops.jm.taobao.net/service-manager/service_search/index.htm?envType=daily)查询相关服务接口，并且使用[Nexus](http://mvnrepo.taobao.ali.com/nexus/index.html#welcome)查询并获得相关jar包。
-2. hsf 的mock方法与其他类型代理无区别，且可以参照例六直接在浏览器端调用hsf service
+ - 1. 使用ModelProxy调用hsf服务时，其所需要的参数类型及结构由hsf服务提供者决定。当服务提供者使用java发布service时，其参数要求有确定的数据类型，关于java和js之间的数据类型转换，请参考[node-hsf之Java 对象与 Node 的对应关系以及调用方法章节](http://gitlab.alibaba-inc.com/node/node-hsf/tree/master)。推荐使用[js-to-java](https://github.com/node-modules/js-to-java)来辅助编写Java对象。关于hsf的相关说明请参考[HSF项目说明](http://confluence.taobao.ali.com/pages/viewpage.action?pageId=819280)。此外，您可以使用[HSF服务治理](http://ops.jm.taobao.net/service-manager/service_search/index.htm?envType=daily)查询相关服务接口，并且使用[Nexus](http://mvnrepo.taobao.ali.com/nexus/index.html#welcome)查询并获得相关jar包。
+ - 2. hsf 的mock方法与其他类型代理无区别，且可以参照例六直接在浏览器端调用hsf service
+
+### 用例九 使用ModelProxy代理Mtop接口
+* 第一步，在interface.json文件中配置hsf interface
+
+``` js
+{
+    "title": "pad淘宝项目数据接口集合定义",
+    "version": "1.0.0",                      
+    "engine": "river-mock",                  
+    "status": "prod",
+    interfaces:[ {
+        "id": "Detail.getTaobaoDyn",
+        "version": "1.0",
+        "type": "mtop",
+        "api": "com.taobao.detail.getTaobaoDyn"
+    } ]
+}
+```
+
+* 第二步，使用ModelProxy
+
+```js
+var detail = ModelProxy.create( 'Detail.*' );
+detail.getTaobaoDyn( {'itemNumId': 37194529489} )
+    // 在Node端访问Mtop必须带上cookie，cookie一般取自req.headers.cookie 字段
+    .withCookie( req.headers.cookie )
+    .done( function( data ) {
+        console.log( data );
+    } ).fail( function( err ) {
+        console.log( err );
+    } );
+```
+
+* `补充说明`：mtop 的mock方法及在浏览器端使用方法与其他无差别。
+
 
 ### 完整实例请查看 [demo](demo/)
 
@@ -377,6 +414,19 @@ UserService.append( user )
         "keepAliveMsecs": 3000               // [选填][number] 发送TCP keepAlive包的间隔时长。默认为3000。注意需要考虑Node应用实际部署
                                              // 的情况。建议当Node与后端服务（可以是Java）部署在同一台机器上时，设置为3000。分开部署时如果网络
                                              // 延时比较严重或者后端服务经常处于高压之下而导致响应变慢，则应该适当调大该值。
+    },
+    "mtop": {                                // mtop接口访问配置，不需要时可以不配置
+        "urls": {                            // [选填][object] mtop api地址，默认为说明示例
+            "prod": "http://api.m.taobao.com/rest/h5ApiUpdate.do",
+            "prep": "http://api.wapa.taobao.com/rest/h5ApiUpdate.do",
+            "daily": "http://api.waptest.taobao.com/rest/h5ApiUpdate.do"
+        },
+        "tokenName": "_m_h5_tk",             // [选填][string] mtop 协议使用的token在cookie中的字段名，默认为_m_h5_tk
+        "appKeys": {                         // mtop 协议使用的appKey，不同环境下使用的appKey可能不同
+            "prod": 1257447,
+            "prep": 1257447,                
+            "daily": 4272                 
+        }                    
     },
     "hsf": {                                 // hsfClient相关配置，不需要时可以不配置。参考node-hsf
         "configServers": {                   // hsf服务器配置地址，哪一个地址被启用取决于 status字段
@@ -437,6 +487,36 @@ UserService.append( user )
                                          // (见例六),则浏览器端可以直接通过interface id访问该接口，否则无法访问。默认为true
     "bypassProxyOnClient": false,        // [选填][boolean] 在浏览器端使用ModelProxy请求数据时是否绕过代理而直接请求原地址。
                                          // 当且仅当status 字段不为mock或者mockerr时有效。默认 false
+}
+
+```
+
+### mtop interface 配置
+
+``` js
+ {
+    "name": "获取购物车信息",                  // [选填][string] 接口名称
+    "desc": "接口负责人: 善繁",                // [选填][string] 接口描述
+    "version": "1.0",                       // [选填][string] 接口版本号，发送请求时会带上版本号字段，默认1.0
+    "type": "mtop",                         // [必填][string] 接口类型，取值可以是http或者hsf，使用http接口时其值必须为http
+    "id": "Detail.getTaobaoDyn",            // [必填][string] 接口ID，必须由英文单词+点号组成
+    "api": "com.taobao.detail.getTaobaoDyn",// [必填][string] 需要调用的 mtop api 
+    "ruleFile": "cart.getCart.rule.json",   // [选填][string] 对应的数据规则文件，当Proxy Mock状态开启时回返回mock数据
+                                            // 不配置时默认为id + ".rule.json"。
+    "isRuleStatic": true,                   // [选填][boolean] 数据规则文件是否为静态，即在开启mock状态时，程序会将ruleFile
+                                            // 按照静态文件读取, 而非解析该规则文件生成数据，默认为false
+    "engine": "mockjs"                      // [选填][string] mock引擎，取值可以是river-mock和mockjs。覆盖全局engine
+    "status": "prod",                       // [选填][string] 当前代理状态，可以是mtop urls中的某个键值(prod, prep, daily)
+                                            // 或者mock或mockerr。如果不填，则代理状态依照全局设置的代理状态；如果设置为mock，
+                                            // 则返回 ruleFile中定义response内容；如果设置为mockerr，则返回ruleFile中定义
+                                            // 的responseError内容。
+    "dataOnly": false,                      // [选填][string] 是否只返回调用正确时的data。设置为true时，只返回mtop协议规定的
+                                            // data字段内容，而忽略其他协议字段。且只要协议字段 retType 不为 0，即作为调用失败处理。
+                                            // 否则返回包含了mtop协议字段全部结果集。默认为false
+    "isCookieNeeded": true,                 // [选填][boolean] 是否需要传递cookie默认true
+    "timeout": 5000,                        // [选填][number] 延时设置，默认10000
+    "intercepted": true                     // [选填][boolean] 是否拦截请求。当设置为true时，如果在Node端启用了ModelProxy拦截器
+                                            // (见例六),则浏览器端可以直接通过interface id访问该接口，否则无法访问。默认为true
 
 }
 
@@ -613,12 +693,11 @@ ruleBase字段所指定的文件夹中。 (建议该文件夹与interface配置�
 }
 
 ```
-## 如何为ModelProxy贡献代理插件
-完善中...
+## 如何开发ModelProxy插件
+// to be continued...
 
-## [附一] 测试覆盖率
 ---
-
+## [附一] 测试覆盖率
 **Overview: `96%` coverage `272` SLOC** 
 
 ## [附二] [前后端分离思考与实践](http://ued.taobao.org/blog/2014/04/modelproxy/)

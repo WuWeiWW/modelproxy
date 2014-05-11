@@ -1,3 +1,7 @@
+## v0.5.0-alpha
+* 支持ModelProxy在node端访问mtop接口
+* 支持ModelProxy在浏览器端访问mtop接口
+
 ## v0.4.1
 * 暂时移除对hsf-protocol-cpp的依赖，以适应aone开发机部署环境。
 

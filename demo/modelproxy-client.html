@@ -14,11 +14,12 @@
 <script type="text/javascript">
     KISSY.use( "modelproxy, node", function( S, ModelProxy, Node ) {
         ModelProxy.configBase( '/model/' );
+
         var searchModel = ModelProxy.create( 'Search.*' );
         searchModel
             .list( { q: 'ihpone6' } )
             .list( { q: '冲锋衣' } )
-            .suggest( { q: 'i' } )
+            .suggest(  )
             .getNav( { q: '滑板' } )
             .done( function( data1, data2, data3, data4 ) {
                 console.log( '这是由前端合并请求的结果:');
@@ -31,6 +32,7 @@
             } ).error( function( err ) {
                 console.error( err );
             } );
+
         var user = ModelProxy.create( 'UserData.append' );
         user.append( { $class: 'com.taobao.user', id: 123456789, des: 'hello hsf', isValid: true } )
             .done( function( data ) {
@@ -55,6 +57,16 @@
                     alert( result );
                 } );
         } );
+
+        // mtop
+        var detail = ModelProxy.create( 'Detail.*' );
+        detail.getTaobaoDyn( {"itemNumId": "37194529489"} )
+            .done( function( data ) {
+                console.log( 'This is the data responsed from mtop:' )
+                console.log( data );
+            } ).fail( function( err ) {
+                console.log( err );
+            } );
     } );
     
     KISSY.use( "io", function( S, IO ) {
