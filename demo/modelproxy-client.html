@@ -59,16 +59,28 @@
         } );
 
         // mtop
-        var detail = ModelProxy.create( 'Detail.*' );
-        detail.getTaobaoDyn( {"itemNumId": "37194529489"} )
+        var diandian = ModelProxy.create( 'Diandian.*' );
+        diandian.getCityList()
             .done( function( data ) {
-                console.log( 'This is the data responsed from mtop:' )
+                console.log( 'mtop:' );
                 console.log( data );
             } ).fail( function( err ) {
                 console.log( err );
             } );
+
+        // mysql
+        // test for mtop
+        var service = ModelProxy.create( 'MysqlTest.*' );
+
+        service.getUser( ['test1'] )
+            .getUser( ['test2'] )
+            .getUser( ['test3'] )
+            .done( function( user1, user2, user3 ) {
+                console.log( 'mysql:' );
+                console.log( user1, user2, user3 );
+            } );
     } );
-    
+
     KISSY.use( "io", function( S, IO ) {
         IO( {
             url: '/getCombinedData',

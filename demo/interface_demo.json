@@ -3,6 +3,9 @@
     "version": "1.0.0",
     "engine": "mockjs",
     "rulebase": "interfaceRules",
+    "enablePlugins": {
+        "hsf": false
+    },
     "http": {
         "maxSockets": 500,
         "keepAliveMsecs": 3000
@@ -13,6 +16,18 @@
             "daily": "10.232.16.8",          
             "prep": "172.23.226.84"
         }
+    },
+    "mysql": {
+        "pools": {
+            "test": {
+                "host": "115.28.48.117",
+                "port": 3306,
+                "user": "zyz",
+                "database": "test",
+                "password": "passw0rd"
+            }
+        },
+        "defaultPool": "test"
     },
     "status": "prod",
     "interfaces": [ {
@@ -86,5 +101,16 @@
         "version": "1.0",
         "type": "mtop",
         "api": "com.taobao.detail.getTaobaoDyn"
+    }, {
+        "id": "Diandian.getCityList",
+        "version": "2.0",
+        "type": "mtop",
+        "api": "mtop.life.diandian.getCityList"
+    }, {
+        "id": "MysqlTest.getUser",
+        "type": "mysql",
+        "sql": "SELECT * FROM USERINFO WHERE USERID = ?",
+        "status": "prod",
+        "isRuleStatic": true
     } ]
 }

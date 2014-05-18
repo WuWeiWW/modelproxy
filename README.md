@@ -15,12 +15,14 @@
    - [用例七 代理带cookie的请求并且回写cookie]()
    - [用例八 使用ModelProxy代理HSF的consumer功能]()
    - [用例九 使用ModelProxy代理Mtop接口]()
+   - [用例十 使用ModelProxy操作mysql数据库]()
  - [完整实例](demo/)
  - [配置文件详解]()
    - [interface.json 配置]()
    - [http 接口配置]()
    - [mtop 接口配置]()
    - [hsf 接口配置]()
+   - [mysql 接口配置]()
    - [配置文件中的全局变量引入]()
  - [API]()
    - [ModelProxy对象创建方式]()
@@ -327,7 +329,7 @@ app.get( '/getMycart', function( req, res ) {
             "prep": "172.23.226.84"
         }
     },
-    interfaces:[ {
+    "interfaces": [ {
         "type": "hsf",
         "id": "UserService.append",
         "service": "com.taobao.uic.common.service.userdata.UicDataService",
@@ -361,7 +363,7 @@ UserService.append( user )
  - 2. hsf 的mock方法与其他类型代理无区别，且可以参照例六直接在浏览器端调用hsf service
 
 ### 用例九 使用ModelProxy代理Mtop接口
-* 第一步，在interface.json文件中配置hsf interface
+* 第一步，在interface.json文件中配置mtop interface
 
 ``` js
 {
@@ -369,7 +371,7 @@ UserService.append( user )
     "version": "1.0.0",                      
     "engine": "river-mock",                  
     "status": "prod",
-    interfaces:[ {
+    "interfaces":[ {
         "id": "Detail.getTaobaoDyn",
         "version": "1.0",
         "type": "mtop",
@@ -394,6 +396,58 @@ detail.getTaobaoDyn( {'itemNumId': 37194529489} )
 
 * `补充说明`：mtop 的mock方法及在浏览器端使用方法与其他无差别。
 
+### 用例十 使用ModelProxy操作mysql数据库
+* 第一步，在interface.json文件中配置mysql interface
+
+```js
+{
+    "title": "xxxx",
+    "version": "1.0.0",                      
+    "engine": "river-mock",                  
+    "status": "prod",
+    "mysql": {
+        "pools": {
+            "test": {
+                "host": "127.0.0.1",
+                "port": 3306,
+                "user": "user1",
+                "database": "testdb",
+                "password": "passw0rd",
+                "connectionLimit" 100
+            }
+        },
+        "defaultPool": "test"
+    },
+    "interfaces":[ {
+        "id": "UserService.getUser",
+        "type": "mysql",
+        "sql": "SELECT * FROM USERINFO WHERE ID = ?"
+    }, {
+        "id": "UserService.addUser",
+        "type": "mysql",
+        "sql": "INSERT INTO USERINFO VALUES(?, ?, ?, ?)"
+    }, {
+        "id": "UserService.updateUser",
+        "type": "mysql",
+        "sql": "UPDATE USERINFO SET ?? = ? WHERE ID = ?"
+    } ]
+}
+
+```
+
+```js
+var userService = ModelProxy.create( 'UserService.*' );
+
+userService
+    .getUser( ['user1'] )
+    .addUser( ['user2', '男', '1999-01-01', 'passw0rd'] )
+    .updateUser( ['GENDER', '女', 'user3' ] )
+    .done( function( result1, result2, result3 ) {
+        console.log.( result1, result2, result3 );
+    } );
+
+```
+
 
 ### 完整实例请查看 [demo](demo/)
 
@@ -403,18 +457,27 @@ detail.getTaobaoDyn( {'itemNumId': 37194529489} )
 
 ``` js
 {
-    "title": "pad淘宝项目数据接口集合定义",       // [必填][string] 接口文档标题
+    "title": "xxx数据接口定义",                // [必填][string] 接口文档标题
     "version": "1.0.0",                      // [必填][string] 版本号
     "engine": "river-mock",                  // [选填][string] mock引擎，取值可以是river-mock和mockjs。不需要mock数据时可以不配置
     "rulebase": "interfaceRules",            // [选填][string] mock规则文件夹名称。不需要mock数据时可以不配置。约定该文件夹与
                                              // interface.json配置文件位于同一文件夹。默认为interfaceRules
     "status": "prod",                        // [必填][string] 全局代理状态，取值只能是 interface.urls中出现过的键值或者mock
-    "http": {                                // httpClient 相关配置，不需要是可以不配置
+    "enablePlugins": {                       // [选填][object] 插件启用配置，配置内容与[lib/plugins]所集成的插件一致。注意插件之间的依赖关系
+        "http": true,                        // [选填][boolean] 是否启用http代理插件。设置为false时则不会做相应地插件初始化工作。默认true
+                                             // 注意：如果禁用http代理会影响其他继承该插件实现的代理，比如mtop
+        "mtop": true,                        // 同上
+        "mysql": true,                       // 同上
+        "hsf": false                         // 同上
+    },
+    /* http 接口代理配置 */
+    "http": { // httpClient 相关配置，不需要是可以不配置，`注意`：该配置项会影响所有其他基于http接口实现的子接口配置效果，比如mtop。
         "maxkSockets": 1000,                 // [选填][number] 最大socket链接数，默认1000。建议与后端http server所支持的并发链接数一致。
         "keepAliveMsecs": 3000               // [选填][number] 发送TCP keepAlive包的间隔时长。默认为3000。注意需要考虑Node应用实际部署
                                              // 的情况。建议当Node与后端服务（可以是Java）部署在同一台机器上时，设置为3000。分开部署时如果网络
                                              // 延时比较严重或者后端服务经常处于高压之下而导致响应变慢，则应该适当调大该值。
     },
+    /* mtop 接口代理配置 */
     "mtop": {                                // mtop接口访问配置，不需要时可以不配置
         "urls": {                            // [选填][object] mtop api地址，默认为说明示例
             "prod": "http://api.m.taobao.com/rest/h5ApiUpdate.do",
@@ -423,12 +486,14 @@ detail.getTaobaoDyn( {'itemNumId': 37194529489} )
         },
         "tokenName": "_m_h5_tk",             // [选填][string] mtop 协议使用的token在cookie中的字段名，默认为_m_h5_tk
         "appKeys": {                         // mtop 协议使用的appKey，不同环境下使用的appKey可能不同
-            "prod": 1257447,
-            "prep": 1257447,                
+            "prod": 12574478,
+            "prep": 12574478,                
             "daily": 4272                 
-        }                    
+        }
     },
+    /* hsf 接口代理配置 */
     "hsf": {                                 // hsfClient相关配置，不需要时可以不配置。参考node-hsf
+        "enabled": true,                     // [选填][boolean] 是否启用hsf类型的接口代理。设置为false时，则不会做相应的插件初始化。默认true
         "configServers": {                   // hsf服务器配置地址，哪一个地址被启用取决于 status字段
             "prod": "commonconfig.config-host.taobao.com",
             "daily": "10.232.16.8",          
@@ -443,7 +508,25 @@ detail.getTaobaoDyn( {'itemNumId': 37194529489} )
         "keepAlive": true,                   // [选填][boolean] 此client下生成的所有consumer是否与服务端维持长连接，默认为true
         "noDelay": true                      // [选填][boolean] 设置此client下生成的所有consumer是否关闭nagle算法，默认为true
     },
-
+    /* mysql 接口代理配置 */
+    "mysql": {  // mysql相关配置
+        "pools": {
+            "poolName1": {
+                "host": "127.0.0.1",        // [选填][string] 数据库服务主机地址，默认localhost
+                "port": 3306,               // [选填][number] 端口号，默认3306
+                "user": "test",             // [必填][string] 用户名
+                "password": "passw0rd",     // [必填][string] 密码
+                "database": "dbtest",       // [必填][string] 数据库名
+                "connectionLimit": 10       // [选填][string] 最大链接保有数，默认10
+                // 更多关于链接配置请查看 [https://github.com/felixge/node-mysql#connection-options]
+            },
+            "poolName2": {
+                // 同上
+            }
+            // ...
+        },
+        "defaultPool": "poolName1"          // [必填][string] 默认链接池名，当接口配置未指定具体的链接池时，则从默认连接池获取链接。
+    },
     "interfaces": [ {
         // 此处设置每一个interface的具体配置
         // ... 不同类型的接口配置方法见下文
@@ -456,7 +539,7 @@ detail.getTaobaoDyn( {'itemNumId': 37194529489} )
 ``` js
  {
     "name": "获取购物车信息",               // [选填][string] 接口名称
-    "desc": "接口负责人: 善繁",             // [选填][string] 接口描述
+    "desc": "接口负责人: xxx",             // [选填][string] 接口描述
     "version": "0.0.1",                  // [选填][string] 接口版本号，发送请求时会带上版本号字段
     "type": "http",                      // [必填][string] 接口类型，取值可以是http或者hsf，使用http接口时其值必须为http
     "id": "cart.getCart",                // [必填][string] 接口ID，必须由英文单词+点号组成
@@ -496,7 +579,7 @@ detail.getTaobaoDyn( {'itemNumId': 37194529489} )
 ``` js
  {
     "name": "获取购物车信息",                  // [选填][string] 接口名称
-    "desc": "接口负责人: 善繁",                // [选填][string] 接口描述
+    "desc": "接口负责人: xxx",                // [选填][string] 接口描述
     "version": "1.0",                       // [选填][string] 接口版本号，发送请求时会带上版本号字段，默认1.0
     "type": "mtop",                         // [必填][string] 接口类型，取值可以是http或者hsf，使用http接口时其值必须为http
     "id": "Detail.getTaobaoDyn",            // [必填][string] 接口ID，必须由英文单词+点号组成
@@ -514,7 +597,7 @@ detail.getTaobaoDyn( {'itemNumId': 37194529489} )
                                             // data字段内容，而忽略其他协议字段。且只要协议字段 retType 不为 0，即作为调用失败处理。
                                             // 否则返回包含了mtop协议字段全部结果集。默认为false
     "isCookieNeeded": true,                 // [选填][boolean] 是否需要传递cookie默认true
-    "timeout": 5000,                        // [选填][number] 延时设置，默认10000
+    "timeout": 5000,                        // [选填][number] 延时设置，默认5000
     "intercepted": true                     // [选填][boolean] 是否拦截请求。当设置为true时，如果在Node端启用了ModelProxy拦截器
                                             // (见例六),则浏览器端可以直接通过interface id访问该接口，否则无法访问。默认为true
 
@@ -552,11 +635,29 @@ detail.getTaobaoDyn( {'itemNumId': 37194529489} )
 }
 ```
 
-### tms interface 配置
+### mysql interface 配置
 
 ``` js
 {
-// 设计中...
+    "name": "获取购物车信息",                 // [选填][string] 接口名称
+    "desc": "接口负责人: xxx",               // [选填][string] 接口描述
+    "type": "mysql",                       // [必填][string] 接口类型, 必须为mysql
+    "sql": "SELECT * FROM ?? WHERE ID = ? ORDER BY ??"  // [必填][string] 待执行的sql。
+    // 注意sql中 ? 和 ??的区别。? 表示参数中需要填充相关的值，而 ?? 则表示需要填写的identifier如表名，字段名等等。
+    // 虽然两者都是执行sql所需要指定的参数，但是两者被转义的规则不一样，以防止sql注入。
+    "poolName": "poolName1",               // [选填][string] sql执行对应的连接池名，不配置时则取interface.
+                                           // json#mysql配置中defaultPool所对应的连接池名
+    "ruleFile": "cart.getCart.rule.json",   // [选填][string] 对应的数据规则文件，当Proxy Mock状态开启时回返回mock数据
+                                            // 不配置时默认为id + ".rule.json"。
+    "isRuleStatic": true,                   // [选填][boolean] 数据规则文件是否为静态，即在开启mock状态时，程序会将ruleFile
+                                            // 按照静态文件读取, 而非解析该规则文件生成数据，默认为false
+    "engine": "river-mock",                 // [选填][string] mock引擎，取值可以是river-mock和mockjs。覆盖全局engine
+    "status": "prod",                       // [选填][string] 当前代理状态，可以是mtop urls中的某个键值(prod, prep, daily)
+                                            // 或者mock或mockerr。如果不填，则代理状态依照全局设置的代理状态；如果设置为mock，
+                                            // 则返回 ruleFile中定义response内容；如果设置为mockerr，则返回ruleFile中定义
+                                            // 的responseError内容。
+    "intercepted": true,                    // [选填][boolean] 是否拦截请求。
+    "method": 'GET'                         // [选填][string] 在浏览器端使用ModelProxy请求数据时的方式。默认为GET。
 }
 ```
 

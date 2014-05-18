@@ -5,7 +5,7 @@ KISSY.add( 'modelproxy', function ( S, IO ) {
     Proxy.prototype = {
         request: function( params, callback, errCallback ) {
             // special code for hsf proxy
-            if ( this._opt.type === 'hsf' ) {
+            if ( this._opt.type === 'hsf' || this._opt.type === 'mysql'  ) {
                 params = { args: JSON.stringify(params) };
             }
             IO( {

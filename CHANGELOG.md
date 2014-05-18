@@ -1,3 +1,17 @@
+## v0.6.0-alpha
+* 支持ModelProxy在node端调用mysql数据库
+* 支持ModelProxy在浏览器端调用mysql接口
+
+## v0.5.1-beta
+* interface新增 enablePlugins 配置，方便用户通过配置启用或者禁用各种接口代理插件。
+* 重构proxy.js，改变各种类型的接口拦截方式，如果为mock状态，则统一由proxy class代理拦截。
+
+## v0.5.0
+* http request final callback 之前增加判断是否结束，以防止重复callback
+
+## v0.5.0-alpha1
+* 修复了浏览器端调用mtop接口失败的bug
+
 ## v0.5.0-alpha
 * 支持ModelProxy在node端访问mtop接口
 * 支持ModelProxy在浏览器端访问mtop接口

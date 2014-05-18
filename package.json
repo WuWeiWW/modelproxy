@@ -1,7 +1,7 @@
 {
   "name": "midway-modelproxy",
   "description": "midway modelproxy module",
-  "version": "0.5.0-alpha",
+  "version": "0.5.0",
   "author": "shanfan <yingzhu.zyz@alibaba-inc.com>",
   "contributors": [
     {
@@ -15,7 +15,8 @@
     "iconv-lite": "0.2.11",
     "agentkeepalive": "0.2.2",
     "midway-parser": "0.0.1",
-    "hsf": "~1.0.0-beta9"
+    "hsf": "~1.0.0-beta9",
+    "mysql": "~2.2.0"
   },
   "devDependencies": {
     "mocha": "1.17.1",
