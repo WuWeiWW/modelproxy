@@ -95,7 +95,7 @@ ModelProxy.init( path );
 
 * 第三步 使用ModelProxy
 
-```js
+```javascript
 // 创建model
 var searchModel = new ModelProxy( {
     searchItems: 'Search.getItems'  // 自定义方法名: 配置文件中的定义的接口ID
@@ -397,7 +397,7 @@ detail.getTaobaoDyn( {'itemNumId': 37194529489} )
 * `补充说明`：mtop 的mock方法及在浏览器端使用方法与其他无差别。
 
 ### 用例十 使用ModelProxy操作mysql数据库
-* 第一步，在interface.json文件中配置mysql interface
+* 配置
 
 ```js
 {
@@ -434,6 +434,8 @@ detail.getTaobaoDyn( {'itemNumId': 37194529489} )
 }
 
 ```
+
+* 代码
 
 ```js
 var userService = ModelProxy.create( 'UserService.*' );

@@ -1,6 +1,8 @@
-## v0.6.0-alpha
+## v0.6.0-beta
+* 修复了httpproxy重构之后关于res变量引用位置错误的bug
 * 支持ModelProxy在node端调用mysql数据库
 * 支持ModelProxy在浏览器端调用mysql接口
+* 完善了mysql proxy测试用例
 
 ## v0.5.1-beta
 * interface新增 enablePlugins 配置，方便用户通过配置启用或者禁用各种接口代理插件。

@@ -1,6 +1,6 @@
 var assert = require( 'assert' );
 
-var ModelProxy = require( '../lib-cov/modelproxy' );
+var ModelProxy = require( '../lib/modelproxy' );
 
 describe( 'ModelProxy', function() {
   describe( '#init()', function() {
@@ -8,6 +8,7 @@ describe( 'ModelProxy', function() {
       assert.throws( function() {
         ModelProxy.init( 'error/path/interface_test.json' );
       }, function( err ) {
+        ModelProxy.init( '../tests/interface_test.json' );
         return err.toString().indexOf( 'no such file or directory' ) !== -1;
       } );
     } );
@@ -35,8 +36,9 @@ describe( 'ModelProxy', function() {
     } );
   } );
 
-  ModelProxy.init( '../tests/interface_test.json' );
   
+  ModelProxy.init( '../tests/interface_test.json' );
+
   describe( '#create()', function() {
     it( 'should return an object with methods specified by the profile', function() {
       var m = ModelProxy.create( 'Search.suggest' );

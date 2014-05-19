@@ -74,8 +74,5 @@
         "service": "com.taobao.uic.common.service.userdata.UicDataService",
         "methodName": "getData",
         "method": "POST"
-    }  ],
-    "combo": {
-        "getMyData": [ "Cart.getCart", "Search.suggest" ]
-    }
+    }  ]
 }

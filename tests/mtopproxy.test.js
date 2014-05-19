@@ -3,7 +3,7 @@ var assert = require( 'assert' );
 var MtopProxy = require( '../lib/plugins/mtop' );
 var HttpProxy = require( '../lib/plugins/http' );
 
-var cookie = "lzstat_uv=16278696413116954092|2511607@2511780@2738597@3258521@878758@2735853@2735859@2735862@2735864@2341454@2868200@2898598@1296239@2225939@3152682@1813784; miid=3882702882102873773; ali_ab=42.120.74.193.1395041649126.7; x=e%3D1%26p%3D*%26s%3D0%26c%3D0%26f%3D0%26g%3D0%26t%3D0%26__ll%3D-1%26_ato%3D0; ck1=; l=%E5%96%84%E7%B9%81::1399872955105::11; mt=cp=0&np=&ci=0_1&cyk=0_0; tg=0; linezing_session=9pX2paimn7UeYMA9YL73AJlw_13998769768870Xjg_1; supportWebp=false; v=0; cna=wjR/C+c2gEUCASp4SsmMsEpX; wud=wud; ockeqeudmj=v0XiUfo%3D; _w_tb_nick=nodejs; imewweoriw=i06Edez7IjVmKr6W0%2BWgAdUZ6KGbhnQHntBjD5BLCGw%3D; WAPFDFDTGFG=%2B4dRjM5djSecKyo4JwyfmJ2Wk7iKyBzh%2Fy4CWxd3Im0%3D; _w_app_lg=1; _w_al_f=1; lgc=nodejs; tracknick=nodejs; sg=s25; t=e8bd0dbbf4bdb8f3704a1974b8a166b5; _cc_=UtASsssmfA%3D%3D; _l_g_=Ug%3D%3D; _nk_=nodejs; _m_h5_tk=d4432171afe6aada57c3b16e35c12353_1399900940460; _m_h5_tk_enc=df9d0d2ab7e4a7d0c7773489de9e88ea; uc1=cookie14=UoLVbEzBoXGxNg%3D%3D&cookie21=WqG3DMC9FxUx&cookie15=UtASsssmOIJ0bQ%3D%3D";
+var cookie = "lzstat_uv=16278696413116954092|2511607@2511780@2738597@3258521@878758@2735853@2735859@2735862@2735864@2341454@2868200@2898598@1296239@2225939@3152682@1813784; miid=3882702882102873773; linezing_session=9pX2paimn7UeYMA9YL73AJlw_13998769768870Xjg_1; supportWebp=false; wud=wud; ockeqeudmj=v0XiUfo%3D; _w_tb_nick=nodejs; imewweoriw=i06Edez7IjVmKr6W0%2BWgAdUZ6KGbhnQHntBjD5BLCGw%3D; WAPFDFDTGFG=%2B4dRjM5djSecKyo4JwyfmJ2Wk7iKyBzh%2Fy4CWxd3Im0%3D; _w_app_lg=1; _w_al_f=1; cna=KcVJCxpk1XkCAX136Nv5aaC4; ali_ab=42.120.74.193.1395041649126.7; ck1=; v=0; x=e%3D1%26p%3D*%26s%3D0%26c%3D0%26f%3D0%26g%3D0%26t%3D0%26__ll%3D-1%26_ato%3D0; whl=-1%260%260%261399998030001; l=nodejs::1400403060985::11; existShop=MTQwMDQ3MDE0OA%3D%3D; lgc=nodejs; tracknick=nodejs; sg=s25; mt=cp=0&np=&ci=0_1&cyk=0_0; _cc_=U%2BGCWk%2F7og%3D%3D; tg=0; _l_g_=Ug%3D%3D; lzstat_ss=1488891860_4_1399994985_1296239|921485505_4_1399994985_2225939|278005458_0_1400020487_2511607|2625932748_0_1400498947_2738597; t=e8bd0dbbf4bdb8f3704a1974b8a166b5; _nk_=nodejs; _m_h5_tk=4f2fd5788308da3101bd8d14c94d7622_1400474489214; _m_h5_tk_enc=99261251f9ddaa57980e63a6a0e9ee69; uc1=lltime=1400470071&cookie14=UoW3v0zGsRz9Qg%3D%3D&existShop=false&cookie16=W5iHLLyFPlMGbLDwA%2BdvAGZqLg%3D%3D&cookie21=WqG3DMC9FxUx&tag=2&cookie15=UIHiLt3xD8xYTw%3D%3D";
 
 HttpProxy.init( {
     status: 'prod'
@@ -69,6 +69,7 @@ describe( 'MtopProxy', function() {
 
 describe( 'MtopProxy Object', function() {
     var opt = {
+        id: 'Detail.getTaobaoDyn',
         api: 'com.taobao.detail.getTaobaoDyn',
         v: '1.0',
         dataType: 'json',
@@ -110,6 +111,7 @@ describe( 'MtopProxy Object', function() {
             var res = {
                 headers: {},
                 end: function( data ) {
+                    console.log( '' );
                     console.log( data );
                     assert.notEqual( data.length,  0 );
                     done();
