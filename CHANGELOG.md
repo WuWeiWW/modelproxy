@@ -1,3 +1,6 @@
+## v0.6.0
+* 在http.js中querystringify方法内加try/catch 防止URIError和JSON循环引用问题
+
 ## v0.6.0-beta
 * 修复了httpproxy重构之后关于res变量引用位置错误的bug
 * 支持ModelProxy在node端调用mysql数据库

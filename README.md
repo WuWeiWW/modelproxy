@@ -43,7 +43,7 @@
 1. 不同的开发者对于接口访问代码编写方式统一，含义清晰，降低维护难度。
 2. 框架内部采用工厂+单例模式，实现接口一次配置多次复用。并且开发者可以随意定制组装自己的业务Model(依赖注入)。
 3. 可以非常方便地实现线上，日常，预发环境的切换。
-4. 内置[river-mock](http://gitlab.alibaba-inc.com/river/mock/tree/master)和[mockjs](http://mockjs.com)等mock引擎，提供mock数据非常方便。
+4. 内置[river-mock](http://gitlab.alibaba-inc.com/river/mock/tree/master)等mock引擎，提供mock数据非常方便。
 5. 使用接口配置文件，对接口的依赖描述做统一的管理，避免散落在各个代码之中。
 6. 支持浏览器端共享Model，浏览器端可以使用它做前端数据渲染。整个代理过程对浏览器透明。
 7. 接口配置文件本身是结构化的描述文档，可以使用[river](http://gitlab.alibaba-inc.com/river/spec/tree/master)工具集合，自动生成文档。也可使用它做相关自动化接口测试，使整个开发过程形成一个闭环。
@@ -779,10 +779,14 @@ method为创建model时动态生成，参数 params{Object}, 为请求接口所�
 ## 如何使用ModelProxy的Mock功能
 ---
 ### rule.json文件
-当mock状态开启时，mock引擎会读取与接口定义相对应的rule.json规则文件，生成相应的数据。该文件应该位于interface.json配置文件中
-ruleBase字段所指定的文件夹中。 (建议该文件夹与interface配置文件同级)
 
-### rule.json文件样式
+rule.json文件定义一个接口具体的请求和应答数据的格式规范，该规范可以用来mock数据，同时也可以用来验证数据。当ModelProxy mock状态开启时，mock引擎会读取与接口定义相对应的rule.json规则文件，生成相应的数据。该文件应该位于interface.json配置文件中ruleBase字段所指定的文件夹中。 (建议该文件夹与interface配置文件同级)
+
+### rule.json文件内容样式
+
+内容样式取决于Modelproxy采用何种mock引擎，推荐使用阿里集团统一的River-mock。关于River规定的接口写法请参考[River-spec](http://gitlab.alibaba-inc.com/river/spec/tree/master)
+
+* 样例
 
 ```js
 {
